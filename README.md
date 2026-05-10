@@ -10,7 +10,7 @@
 
 | Role | Username | Password |
 |------|----------|----------|
-| 👑 Admin | `admin` | `admin123` |
+| 👑 Admin | `admin` | `demo1234` |
 | 🚚 Fleet Manager | `fleet` | `demo1234` |
 | 📄 Document Manager | `document` | `demo1234` |
 | 📦 Container Manager | `container` | `demo1234` |
