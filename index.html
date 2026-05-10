@@ -903,6 +903,10 @@
                                     <span class="action-icon">📦</span>
                                     จัดการตู้ Container
                                 </div>
+                                <div class="action-btn" onclick="window.location.href='fleet-hub.html'">
+                                    <span class="action-icon">🚛</span>
+                                    ระบบรถ Fleet Hub
+                                </div>
                             </div>
                         </div>
                         
@@ -1044,466 +1048,379 @@
                     
                     <!-- Manual Page -->
                     <section id="manualPage" class="page-section">
-                        <div style="max-width: 900px; margin: 0 auto;">
-                            <h1 style="font-family: 'Kanit'; font-size: 2rem; margin-bottom: 1rem;">📖 คู่มือการใช้งานระบบ</h1>
-                            <p style="color: var(--gray); margin-bottom: 2rem;">Logistics Demo Logistics Management System - เวอร์ชั่น 2.0</p>
-                            
-                            <!-- Table of Contents -->
-                            <div style="background: #f8fafc; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
-                                <h3 style="font-family: 'Kanit'; margin-bottom: 1rem;">📑 สารบัญ</h3>
-                                <ol style="padding-left: 1.5rem; line-height: 2;">
-                                    <li><a href="#manual-intro" style="color: var(--primary);">บทนำและภาพรวมระบบ</a></li>
-                                    <li><a href="#manual-login" style="color: var(--primary);">การเข้าสู่ระบบและสิทธิ์การใช้งาน</a></li>
-                                    <li><a href="#manual-dashboard" style="color: var(--primary);">Dashboard และ Quick Actions</a></li>
-                                    <li><a href="#manual-jobs" style="color: var(--primary);">การจัดการงานขนส่ง</a></li>
-                                    <li><a href="#manual-documents" style="color: var(--primary);">ระบบเอกสารและการขออนุมัติ</a></li>
-                                    <li><a href="#manual-workflow" style="color: var(--primary);">Workflow การทำงาน</a></li>
-                                    <li><a href="#manual-tips" style="color: var(--primary);">Tips & Tricks</a></li>
+                        <div style="max-width:920px;margin:0 auto;">
+                            <h1 style="font-family:'Kanit';font-size:2rem;margin-bottom:.5rem;">📖 คู่มือการใช้งานระบบ ICL Logistics</h1>
+                            <p style="color:var(--gray);margin-bottom:2rem;">ครอบคลุมทุกฝ่าย — หน้าหลัก | Container Hub | Fleet Hub</p>
+
+                            <!-- TOC -->
+                            <div style="background:#f8fafc;padding:1.5rem;border-radius:12px;margin-bottom:2rem;border-left:4px solid var(--primary);">
+                                <h3 style="font-family:'Kanit';margin-bottom:1rem;">📑 สารบัญ</h3>
+                                <ol style="padding-left:1.5rem;line-height:2.2;column-count:2;column-gap:2rem;">
+                                    <li><a href="#m-overview" style="color:var(--primary);">ภาพรวมระบบ 3 ส่วน</a></li>
+                                    <li><a href="#m-login" style="color:var(--primary);">รหัสเข้าใช้งานทุก Role</a></li>
+                                    <li><a href="#m-admin" style="color:var(--primary);">👑 Admin / ผู้จัดการ</a></li>
+                                    <li><a href="#m-cs" style="color:var(--primary);">📞 CS / ประสานงาน</a></li>
+                                    <li><a href="#m-tech" style="color:var(--primary);">🔧 ช่างเทคนิค</a></li>
+                                    <li><a href="#m-dispatch" style="color:var(--primary);">📋 คนจัดรถ</a></li>
+                                    <li><a href="#m-finance" style="color:var(--primary);">💰 ฝ่ายการเงิน</a></li>
+                                    <li><a href="#m-driver" style="color:var(--primary);">🚚 คนขับรถ</a></li>
+                                    <li><a href="#m-doc" style="color:var(--primary);">📄 ฝ่ายเอกสาร</a></li>
+                                    <li><a href="#m-tips" style="color:var(--primary);">💡 Tips & Tricks</a></li>
                                 </ol>
                             </div>
-                            
-                            <!-- Section 1 -->
-                            <div id="manual-intro" class="manual-section">
-                                <h2 style="font-family: 'Kanit'; color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">1. บทนำและภาพรวมระบบ</h2>
-                                <p style="line-height: 1.8; margin-bottom: 1rem;">
-                                    <strong>Logistics System Demo</strong> เป็นระบบบริหารจัดการขนส่งและเอกสารแบบครบวงจร 
-                                    ออกแบบมาเพื่อเพิ่มประสิทธิภาพในการทำงาน ลดขั้นตอนที่ซ้ำซ้อน และติดตามสถานะแบบเรียลไทม์
-                                </p>
-                                <div style="background: #eff6ff; padding: 1.25rem; border-radius: 10px; border: 2px solid #dbeafe; margin-bottom: 1rem;">
-                                    <h4 style="color: var(--primary); margin-bottom: 0.75rem;">✨ ฟีเจอร์หลัก</h4>
-                                    <ul style="padding-left: 1.5rem; line-height: 2;">
-                                        <li><strong>Quick Actions</strong> - สร้างงานได้ใน 2 คลิก</li>
-                                        <li><strong>Auto-Complete</strong> - ระบบช่วยเติมข้อมูลอัตโนมัติ</li>
-                                        <li><strong>Timeline Tracking</strong> - ติดตามทุกขั้นตอนแบบเรียลไทม์</li>
-                                        <li><strong>Document Management</strong> - ระบบเอกสารพร้อมการขออนุมัติ</li>
-                                        <li><strong>Role-Based Access</strong> - แบ่งสิทธิ์การใช้งานตามตำแหน่ง</li>
-                                    </ul>
+
+                            <!-- 1. Overview -->
+                            <div id="m-overview" class="manual-section">
+                                <h2 style="font-family:'Kanit';color:var(--primary);margin-bottom:1rem;">1. ภาพรวมระบบ 3 ส่วน</h2>
+                                <p style="line-height:1.8;margin-bottom:1rem;">ระบบแบ่งออกเป็น <strong>3 ส่วนหลัก</strong> ที่เชื่อมโยงกัน เข้าถึงได้จากปุ่ม Quick Actions:</p>
+                                <div style="display:grid;gap:1rem;margin-bottom:1.5rem;">
+                                    <div style="background:#eff6ff;padding:1.25rem;border-radius:10px;border-left:4px solid #3b82f6;">
+                                        <div style="font-size:1.1rem;font-weight:700;margin-bottom:.5rem;">🏠 หน้าหลัก</div>
+                                        <p style="color:#374151;line-height:1.8;margin:0;">Portal กลาง — สร้างงาน จัดรถ อัพเดทสถานะ สร้างเอกสาร ดูรายการงานทั้งหมด ระบบ Auto-complete</p>
+                                    </div>
+                                    <div style="background:#ecfdf5;padding:1.25rem;border-radius:10px;border-left:4px solid #10b981;">
+                                        <div style="font-size:1.1rem;font-weight:700;margin-bottom:.5rem;">📦 Container Hub</div>
+                                        <p style="color:#374151;line-height:1.8;margin:0;">บริหารตู้คอนเทนเนอร์ — Container ID Card · แจ้งซ่อม 6 ขั้นตอน · งานช่าง · อะไหล่ · EIR Gate-In/Out · PM Schedule · Temperature Log · Photo Gallery</p>
+                                    </div>
+                                    <div style="background:#fff7ed;padding:1.25rem;border-radius:10px;border-left:4px solid #f97316;">
+                                        <div style="font-size:1.1rem;font-weight:700;margin-bottom:.5rem;">🚛 Fleet Hub</div>
+                                        <p style="color:#374151;line-height:1.8;margin:0;">บริหารกองรถ — จัดรถ+AI แนะนำ · ติดตามรถ Real-time · ค่าเที่ยว · น้ำมัน+เรท · KPI คนขับ · ทะเบียนรถ/เอกสาร · แจ้งซ่อมรถ</p>
+                                    </div>
                                 </div>
                             </div>
-                            
-                            <!-- Section 2 -->
-                            <div id="manual-login" class="manual-section">
-                                <h2 style="font-family: 'Kanit'; color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">2. การเข้าสู่ระบบและสิทธิ์การใช้งาน</h2>
-                                
-                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">2.1 วิธีเข้าสู่ระบบ</h3>
-                                <ol style="padding-left: 1.5rem; line-height: 2; margin-bottom: 1rem;">
-                                    <li>กรอกชื่อผู้ใช้และรหัสผ่าน</li>
-                                    <li>กดปุ่ม "เข้าสู่ระบบ"</li>
-                                    <li>หรือใช้ <strong>Quick Login</strong> สำหรับการทดสอบ</li>
-                                </ol>
-                                
-                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">2.2 ระดับสิทธิ์การใช้งาน</h3>
-                                <div style="display: grid; gap: 1rem; margin-bottom: 1rem;">
-                                    <div style="background: #fef3c7; padding: 1rem; border-radius: 8px; border-left: 4px solid #f59e0b;">
-                                        <strong>👑 Admin (ผู้ดูแลระบบ)</strong>
-                                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                                            <li>เข้าถึงได้ทุกฟีเจอร์</li>
-                                            <li>จัดการผู้ใช้งาน</li>
-                                            <li>อนุมัติการแก้ไขเอกสาร</li>
-                                            <li>ดูรายงานและสถิติทั้งหมด</li>
+
+                            <!-- 2. Credentials -->
+                            <div id="m-login" class="manual-section">
+                                <h2 style="font-family:'Kanit';color:var(--primary);margin-top:2rem;margin-bottom:1rem;">2. รหัสเข้าใช้งานทุก Role</h2>
+                                <p style="color:var(--gray);margin-bottom:1rem;">ใช้รหัสเดียวกันได้ในทุกระบบ — login ครั้งเดียว ระบบจำ session ข้ามหน้า</p>
+                                <div style="overflow-x:auto;">
+                                <table style="width:100%;border-collapse:collapse;font-size:.9rem;border-radius:8px;overflow:hidden;">
+                                    <thead><tr style="background:#1e293b;color:white;">
+                                        <th style="padding:10px 14px;text-align:left;">Role / ตำแหน่ง</th>
+                                        <th style="padding:10px 14px;text-align:left;">Username</th>
+                                        <th style="padding:10px 14px;text-align:left;">Password</th>
+                                        <th style="padding:10px 14px;text-align:left;">เข้าถึงระบบ</th>
+                                    </tr></thead>
+                                    <tbody>
+                                        <tr style="background:#fef3c7;">
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-weight:700;">👑 Admin</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-family:monospace;font-weight:700;color:#7c3aed;">admin</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-family:monospace;font-weight:700;color:#7c3aed;">admin123</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;">ทุกระบบ ทุกหน้า ทุกฟีเจอร์</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-weight:700;">👔 ผู้จัดการ</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-family:monospace;color:#1d4ed8;">manager</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-family:monospace;color:#1d4ed8;">mgr123</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;">ทุกระบบ ทุกหน้า ทุกฟีเจอร์</td>
+                                        </tr>
+                                        <tr style="background:#f0fdf4;">
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-weight:700;">📞 CS / ประสานงาน</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-family:monospace;color:#059669;">cs</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-family:monospace;color:#059669;">cs123</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;">หน้าหลัก + Container Hub (Dashboard, ID Card, EIR, ซ่อม)</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-weight:700;">🔧 ช่างเทคนิค</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-family:monospace;color:#b45309;">tech</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-family:monospace;color:#b45309;">tech123</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;">Container Hub (งานช่าง, อะไหล่)</td>
+                                        </tr>
+                                        <tr style="background:#fff7ed;">
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-weight:700;">📋 คนจัดรถ</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-family:monospace;color:#16a34a;">dispatch</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-family:monospace;color:#16a34a;">disp123</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;">Fleet Hub (Dashboard, จัดรถ, ติดตาม, แจ้งซ่อม)</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-weight:700;">💰 การเงิน</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-family:monospace;color:#b45309;">finance</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-family:monospace;color:#b45309;">fin123</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;">Fleet Hub (Dashboard, ค่าเที่ยว, น้ำมัน)</td>
+                                        </tr>
+                                        <tr style="background:#f0fdf4;">
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-weight:700;">📡 ประสานงานรถ</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-family:monospace;color:#0891b2;">coord</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-family:monospace;color:#0891b2;">coord123</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;">Fleet Hub (Dashboard, ติดตาม, จัดรถ)</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-weight:700;">🚚 คนขับรถ</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-family:monospace;color:#dc2626;">driver</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;font-family:monospace;color:#dc2626;">driver123</td>
+                                            <td style="padding:10px 14px;border-bottom:1px solid #e2e8f0;">Container Hub + Fleet Hub (แจ้งซ่อมเท่านั้น)</td>
+                                        </tr>
+                                        <tr style="background:#f8fafc;">
+                                            <td style="padding:10px 14px;font-weight:700;">📄 ฝ่ายเอกสาร</td>
+                                            <td style="padding:10px 14px;font-family:monospace;color:#6b7280;">doc</td>
+                                            <td style="padding:10px 14px;font-family:monospace;color:#6b7280;">doc123</td>
+                                            <td style="padding:10px 14px;">หน้าหลัก + Container Hub (Dashboard, ID Card)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
+
+                            <!-- 3. Admin -->
+                            <div id="m-admin" class="manual-section">
+                                <h2 style="font-family:'Kanit';color:var(--primary);margin-top:2rem;margin-bottom:1rem;">3. 👑 Admin / ผู้จัดการ</h2>
+                                <div style="background:#fef3c7;padding:1rem;border-radius:8px;border-left:4px solid #f59e0b;margin-bottom:1rem;">
+                                    <strong>เข้าด้วย:</strong> <code style="background:#fff;padding:2px 6px;border-radius:4px;">admin / admin123</code> หรือ <code style="background:#fff;padding:2px 6px;border-radius:4px;">manager / mgr123</code>
+                                </div>
+                                <div style="display:grid;gap:.75rem;">
+                                    <div style="background:#f8fafc;padding:1.1rem;border-radius:8px;border-left:3px solid #3b82f6;">
+                                        <strong style="color:#1e40af;">🏠 หน้าหลัก</strong>
+                                        <ul style="padding-left:1.5rem;line-height:2;margin-top:.5rem;margin-bottom:0;">
+                                            <li>ดู Dashboard ภาพรวมงาน สถิติ KPI รายเดือน</li>
+                                            <li>สร้างงานใหม่ / จัดรถ / อัพเดทสถานะ / สร้างเอกสาร</li>
+                                            <li>ค้นหา RN, เบอร์ตู้, ชื่อลูกค้าได้ทุกรูปแบบ</li>
                                         </ul>
                                     </div>
-                                    <div style="background: #dbeafe; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--primary);">
-                                        <strong>📞 CS Team (ฝ่ายบริการลูกค้า)</strong>
-                                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                                            <li>สร้างและจัดการงาน</li>
-                                            <li>จัดรถและคนขับ</li>
-                                            <li>สร้างเอกสาร</li>
-                                            <li>ติดตามสถานะ</li>
+                                    <div style="background:#f8fafc;padding:1.1rem;border-radius:8px;border-left:3px solid #10b981;">
+                                        <strong style="color:#059669;">📦 Container Hub — กด "จัดการตู้ Container"</strong>
+                                        <ul style="padding-left:1.5rem;line-height:2;margin-top:.5rem;margin-bottom:0;">
+                                            <li>Dashboard ตู้: สถิติ AV/DM/CL รวม</li>
+                                            <li>ค้นหาตู้ → ดู ID Card เต็มรูปแบบ (ประวัติ, PM, อุณหภูมิ, ภาพ)</li>
+                                            <li><strong>อนุมัติ/ปฏิเสธ</strong> ใบแจ้งซ่อมทุกระดับ รวมถึง WO มูลค่าสูง</li>
+                                            <li>จัดการ PM Schedule, EIR Gate-In/Out</li>
+                                            <li>ดูสต๊อคอะไหล่ อนุมัติการสั่งซื้อ</li>
                                         </ul>
                                     </div>
-                                    <div style="background: #d1fae5; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--secondary);">
-                                        <strong>🚚 Driver (คนขับรถ)</strong>
-                                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                                            <li>ดูงานของตัวเอง</li>
-                                            <li>อัพเดทสถานะการขนส่ง</li>
-                                            <li>ดูรายละเอียดเส้นทาง</li>
-                                        </ul>
-                                    </div>
-                                    <div style="background: #fce7f3; padding: 1rem; border-radius: 8px; border-left: 4px solid #ec4899;">
-                                        <strong>📄 Documentation (ฝ่ายเอกสาร)</strong>
-                                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                                            <li>สร้างและจัดการเอกสารทั้งหมด</li>
-                                            <li>ยื่นขออนุมัติหน่วยงานรัฐ</li>
-                                            <li>ติดตามสถานะเอกสาร</li>
-                                            <li>สร้าง Invoice</li>
+                                    <div style="background:#f8fafc;padding:1.1rem;border-radius:8px;border-left:3px solid #f97316;">
+                                        <strong style="color:#ea580c;">🚛 Fleet Hub — กด "ระบบรถ Fleet Hub"</strong>
+                                        <ul style="padding-left:1.5rem;line-height:2;margin-top:.5rem;margin-bottom:0;">
+                                            <li>Dashboard: OTP, Acceptance Rate, Safety Score, km/L</li>
+                                            <li>สร้างงาน จัดรถ อนุมัติ/ปฏิเสธใบซ่อมรถ</li>
+                                            <li>ดูและอนุมัติการจ่ายค่าเที่ยวรายคนขับ</li>
+                                            <li>ตั้งเรทน้ำมัน ดูประสิทธิภาพ km/L ต่อรถ</li>
+                                            <li>ดูโปรไฟล์คนขับ KPI ครบ + ตรวจเอกสารรถ</li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
-                            
-                            <!-- Section 3 -->
-                            <div id="manual-dashboard" class="manual-section">
-                                <h2 style="font-family: 'Kanit'; color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">3. Dashboard และ Quick Actions</h2>
-                                
-                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">3.1 หน้า Dashboard</h3>
-                                <p style="line-height: 1.8; margin-bottom: 1rem;">
-                                    Dashboard แสดงภาพรวมการทำงานทั้งหมด ประกอบด้วย:
-                                </p>
-                                <ul style="padding-left: 1.5rem; line-height: 2; margin-bottom: 1rem;">
-                                    <li><strong>Quick Actions</strong> - ปุ่มทำงานด่วน 4 ปุ่มหลัก</li>
-                                    <li><strong>สถิติแบบเรียลไทม์</strong> - จำนวนงาน, กำลังขนส่ง, รอข้าม, บรรทุก</li>
-                                    <li><strong>รายการงานล่าสุด</strong> - แสดงงาน 20 รายการล่าสุด</li>
-                                    <li><strong>ช่องค้นหา</strong> - ค้นหาด้วย RN, เบอร์ตู้, ลูกค้า</li>
-                                </ul>
-                                
-                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">3.2 Quick Actions - ทำงานได้เร็วขึ้น 3 เท่า</h3>
-                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1rem;">
-                                    <div style="border: 2px solid #dbeafe; padding: 1rem; border-radius: 8px;">
-                                        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🚀</div>
-                                        <strong>สร้างงานใหม่</strong>
-                                        <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
-                                            เปิดฟอร์มสร้างงานพร้อม Auto-generate RN Number
-                                        </p>
+
+                            <!-- 4. CS -->
+                            <div id="m-cs" class="manual-section">
+                                <h2 style="font-family:'Kanit';color:var(--primary);margin-top:2rem;margin-bottom:1rem;">4. 📞 CS / ประสานงาน</h2>
+                                <div style="background:#dbeafe;padding:1rem;border-radius:8px;border-left:4px solid #3b82f6;margin-bottom:1rem;">
+                                    <strong>เข้าด้วย:</strong> <code style="background:#fff;padding:2px 6px;border-radius:4px;">cs / cs123</code>
+                                    &nbsp;|&nbsp; ใน Fleet Hub ใช้: <code style="background:#fff;padding:2px 6px;border-radius:4px;">coord / coord123</code>
+                                </div>
+                                <div style="display:grid;gap:.75rem;">
+                                    <div style="background:#f8fafc;padding:1.1rem;border-radius:8px;">
+                                        <strong>🏠 หน้าหลัก — งานหลักของ CS</strong>
+                                        <ol style="padding-left:1.5rem;line-height:2.2;margin-top:.5rem;margin-bottom:0;">
+                                            <li>กด <strong>"สร้างงานใหม่"</strong> → กรอก RN, ลูกค้า (Auto-complete), เบอร์ตู้, เส้นทาง → บันทึก</li>
+                                            <li>กด <strong>"จัดรถ"</strong> → เลือกงาน → เลือกรถ+คนขับ → ยืนยัน</li>
+                                            <li>กด <strong>"อัพเดทสถานะ"</strong> → เลือกงาน → เลือกสถานะใหม่ → บันทึก</li>
+                                            <li>ค้นหาจากช่อง Search ด้วย RN Number หรือเบอร์ตู้</li>
+                                        </ol>
                                     </div>
-                                    <div style="border: 2px solid #dbeafe; padding: 1rem; border-radius: 8px;">
-                                        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🚚</div>
-                                        <strong>จัดรถ</strong>
-                                        <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
-                                            เลือกงานและจัดรถพร้อมคนขับทันที
-                                        </p>
+                                    <div style="background:#f8fafc;padding:1.1rem;border-radius:8px;">
+                                        <strong>📦 Container Hub — หน้าที่เข้าถึงได้</strong>
+                                        <ul style="padding-left:1.5rem;line-height:2;margin-top:.5rem;margin-bottom:0;">
+                                            <li><strong>Dashboard</strong> — สถิติตู้รวม AV/DM/CL</li>
+                                            <li><strong>ID Card</strong> — ค้นหาตู้ ดูประวัติ สถานะ ตำแหน่ง</li>
+                                            <li><strong>EIR</strong> — บันทึก Gate-In / Gate-Out พร้อม Damage Checklist</li>
+                                            <li><strong>แจ้งซ่อม</strong> — ยื่นใบแจ้งซ่อมแทนลูกค้าได้</li>
+                                        </ul>
                                     </div>
-                                    <div style="border: 2px solid #dbeafe; padding: 1rem; border-radius: 8px;">
-                                        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📍</div>
-                                        <strong>อัพเดทสถานะ</strong>
-                                        <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
-                                            อัพเดทสถานะงาน เช่น ถึงล้ง, ออกจากล้ง, ถึงด่าน
-                                        </p>
-                                    </div>
-                                    <div style="border: 2px solid #dbeafe; padding: 1rem; border-radius: 8px;">
-                                        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📄</div>
-                                        <strong>สร้างเอกสาร</strong>
-                                        <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
-                                            สร้างเอกสารส่งออกและขอใบอนุญาต
-                                        </p>
+                                    <div style="background:#f8fafc;padding:1.1rem;border-radius:8px;">
+                                        <strong>🚛 Fleet Hub (coord) — ติดตามและประสานงาน</strong>
+                                        <ul style="padding-left:1.5rem;line-height:2;margin-top:.5rem;margin-bottom:0;">
+                                            <li><strong>Dashboard</strong> — สถานะรถและ KPI รวม</li>
+                                            <li><strong>ติดตามรถ</strong> — ดูรถที่วิ่งอยู่ ติดต่อคนขับ กด "ส่งของแล้ว"</li>
+                                            <li><strong>จัดรถ</strong> — ดูคิวงาน จัดรถเบื้องต้น ดูรถว่าง</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                            
-                            <!-- Section 4 -->
-                            <div id="manual-jobs" class="manual-section">
-                                <h2 style="font-family: 'Kanit'; color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">4. การจัดการงานขนส่ง</h2>
-                                
-                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">4.1 สร้างงานใหม่ (Step by Step)</h3>
-                                <div style="background: #f8fafc; padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem;">
-                                    <ol style="padding-left: 1.5rem; line-height: 2.5;">
-                                        <li>
-                                            <strong>คลิก Quick Action "🚀 สร้างงานใหม่"</strong>
-                                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.25rem;">
-                                                ระบบจะ Auto-generate RN Number ให้อัตโนมัติ (เช่น RN20260510-001)
-                                            </p>
-                                        </li>
-                                        <li>
-                                            <strong>กรอกข้อมูลพื้นฐาน</strong>
-                                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                                                <li>CB Number - เลขที่คำขอส่งออก</li>
-                                                <li>วิธีข้าม - เลือกประเภทงาน</li>
-                                                <li>เบอร์ตู้ - พิมพ์ 3 ตัวแรกจะมี Auto-suggest</li>
-                                                <li>ขนาดตู้ - 40HC, 40HR, 45HR</li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <strong>กรอกข้อมูลลูกค้าและสถานที่</strong>
-                                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.25rem;">
-                                                ใช้ Auto-complete โดยพิมพ์ชื่อ ระบบจะแนะนำพร้อมข้อมูลติดต่อ
-                                            </p>
-                                        </li>
-                                        <li>
-                                            <strong>เลือกสินค้าและปลายทาง</strong>
-                                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.25rem;">
-                                                เลือกจาก Dropdown หรือพิมพ์ค้นหา
-                                            </p>
-                                        </li>
-                                        <li>
-                                            <strong>คลิก "✅ สร้างงาน"</strong>
-                                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.25rem;">
-                                                งานจะถูกสร้างและแสดงในรายการทันที
-                                            </p>
-                                        </li>
-                                    </ol>
+
+                            <!-- 5. Technician -->
+                            <div id="m-tech" class="manual-section">
+                                <h2 style="font-family:'Kanit';color:var(--primary);margin-top:2rem;margin-bottom:1rem;">5. 🔧 ช่างเทคนิค</h2>
+                                <div style="background:#fef9c3;padding:1rem;border-radius:8px;border-left:4px solid #eab308;margin-bottom:1rem;">
+                                    <strong>เข้าด้วย:</strong> <code style="background:#fff;padding:2px 6px;border-radius:4px;">tech / tech123</code>
+                                    &nbsp;|&nbsp; เข้าได้เฉพาะ <strong>Container Hub</strong>
                                 </div>
-                                
-                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">4.2 ดูรายละเอียดงาน</h3>
-                                <p style="line-height: 1.8; margin-bottom: 1rem;">
-                                    คลิกที่รายการงานใด ๆ จะเปิดหน้าต่างรายละเอียดที่แสดง:
-                                </p>
-                                <ul style="padding-left: 1.5rem; line-height: 2; margin-bottom: 1rem;">
-                                    <li><strong>ข้อมูลงานทั้งหมด</strong> - ตู้, ลูกค้า, สินค้า, ปลายทาง</li>
-                                    <li><strong>Timeline</strong> - แสดงประวัติทุกขั้นตอนพร้อมเวลา</li>
-                                    <li><strong>สถานะปัจจุบัน</strong> - กำลังทำอะไรอยู่</li>
-                                    <li><strong>เอกสารที่เกี่ยวข้อง</strong> - ลิงก์ไปยังเอกสารทั้งหมด</li>
-                                </ul>
-                                
-                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">4.3 สถานะของงาน</h3>
-                                <div style="display: grid; gap: 0.75rem; margin-bottom: 1rem;">
-                                    <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                        <span class="status status-pending"><span class="status-dot"></span>รอดำเนินการ</span>
-                                        <span style="color: var(--gray);">- งานถูกสร้างแล้ว รอจัดรถ</span>
+                                <div style="display:grid;gap:.75rem;">
+                                    <div style="background:#f8fafc;padding:1.1rem;border-radius:8px;">
+                                        <strong>🔧 งานช่าง — ขั้นตอนการทำงาน Work Order</strong>
+                                        <ol style="padding-left:1.5rem;line-height:2.2;margin-top:.5rem;margin-bottom:0;">
+                                            <li>Login → ระบบพาเข้าหน้า <strong>"งานช่าง"</strong> อัตโนมัติ</li>
+                                            <li>ดู Work Order ที่ได้รับมอบหมาย</li>
+                                            <li>กด <strong>"เริ่มงาน"</strong> → ระบบบันทึกเวลาเริ่ม</li>
+                                            <li>ลาก Progress Bar อัพเดทความคืบหน้า (0–100%)</li>
+                                            <li>กด <strong>"เบิกอะไหล่"</strong> → เลือกรายการ → จำนวน → ยืนยัน</li>
+                                            <li>บันทึก <strong>Labor Hours</strong> → กด "เพิ่มแถว" → ใส่ช่าง, ชั่วโมง</li>
+                                            <li>กด <strong>"ปิด Work Order"</strong> เมื่องานเสร็จสมบูรณ์</li>
+                                        </ol>
                                     </div>
-                                    <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                        <span class="status status-loading"><span class="status-dot"></span>กำลังบรรทุก</span>
-                                        <span style="color: var(--gray);">- รถเข้าล้งแล้ว กำลังขึ้นสินค้า</span>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                        <span class="status status-transit"><span class="status-dot"></span>กำลังขนส่ง</span>
-                                        <span style="color: var(--gray);">- รถออกจากล้งแล้ว กำลังเดินทาง</span>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                        <span class="status status-waiting"><span class="status-dot"></span>รอข้ามด่าน</span>
-                                        <span style="color: var(--gray);">- ถึงด่านแล้ว รอผ่านด่าน</span>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                        <span class="status status-delivered"><span class="status-dot"></span>ส่งมอบแล้ว</span>
-                                        <span style="color: var(--gray);">- ส่งมอบสินค้าเรียบร้อย</span>
+                                    <div style="background:#f8fafc;padding:1.1rem;border-radius:8px;">
+                                        <strong>📦 อะไหล่ — จัดการสต๊อคคลัง</strong>
+                                        <ul style="padding-left:1.5rem;line-height:2;margin-top:.5rem;margin-bottom:0;">
+                                            <li>ดูสต๊อคทั้งหมด — <span style="background:#dcfce7;padding:1px 6px;border-radius:4px;font-size:.85rem;">เขียว</span> พร้อม | <span style="background:#fef9c3;padding:1px 6px;border-radius:4px;font-size:.85rem;">เหลือง</span> ใกล้หมด | <span style="background:#fee2e2;padding:1px 6px;border-radius:4px;font-size:.85rem;">แดง</span> ต้องสั่งเพิ่ม</li>
+                                            <li>กด <strong>"เบิกอะไหล่"</strong> → ระบุรายการ จำนวน → ยืนยัน</li>
+                                            <li>กด <strong>"รับอะไหล่"</strong> เมื่อของสั่งซื้อมาถึง → อัพสต๊อคอัตโนมัติ</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                            
-                            <!-- Section 5 - Documents -->
-                            <div id="manual-documents" class="manual-section">
-                                <h2 style="font-family: 'Kanit'; color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">5. ระบบเอกสารและการขออนุมัติ</h2>
-                                
-                                <div style="background: #fef3c7; padding: 1.25rem; border-radius: 10px; border: 2px solid #fcd34d; margin-bottom: 1.5rem;">
-                                    <h4 style="color: #92400e; margin-bottom: 0.75rem;">⚠️ สำคัญมาก!</h4>
-                                    <p style="line-height: 1.8; color: #78350f;">
-                                        ระบบเอกสารมี Workflow การอนุมัติ 3 ระดับ เพื่อให้แน่ใจว่าข้อมูลถูกต้องก่อนยิงใบขน
-                                    </p>
+
+                            <!-- 6. Dispatcher -->
+                            <div id="m-dispatch" class="manual-section">
+                                <h2 style="font-family:'Kanit';color:var(--primary);margin-top:2rem;margin-bottom:1rem;">6. 📋 คนจัดรถ / Dispatcher</h2>
+                                <div style="background:#dcfce7;padding:1rem;border-radius:8px;border-left:4px solid #22c55e;margin-bottom:1rem;">
+                                    <strong>เข้าด้วย:</strong> <code style="background:#fff;padding:2px 6px;border-radius:4px;">dispatch / disp123</code>
+                                    &nbsp;|&nbsp; เข้าได้เฉพาะ <strong>Fleet Hub</strong>
                                 </div>
-                                
-                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">5.1 ประเภทเอกสาร</h3>
-                                <div style="display: grid; gap: 1rem; margin-bottom: 1.5rem;">
-                                    <div style="border: 2px solid #dbeafe; padding: 1rem; border-radius: 8px;">
-                                        <strong>📋 ใบรับรอง (Certificate)</strong>
-                                        <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
-                                            - ใบรับรองถิ่นกำเนิดสินค้า (พ.ก.7)<br>
-                                            - ใบรับรองสุขอนามัย<br>
-                                            - ใบรับรอง GAP
-                                        </p>
+                                <div style="display:grid;gap:.75rem;">
+                                    <div style="background:#f8fafc;padding:1.1rem;border-radius:8px;">
+                                        <strong>📋 จัดรถ — สร้างและมอบหมายงาน</strong>
+                                        <ol style="padding-left:1.5rem;line-height:2.2;margin-top:.5rem;margin-bottom:0;">
+                                            <li>เข้าหน้า <strong>"จัดรถ (Dispatch)"</strong></li>
+                                            <li>กรอกฟอร์มซ้าย: Booking No., ต้นทาง, ปลายทาง, ระยะทาง (km), ประเภทตู้</li>
+                                            <li>กด <strong>"AI แนะนำรถ"</strong> → ระบบวิเคราะห์หารถที่เหมาะสม (ประเภทตู้ + OTP คนขับ)</li>
+                                            <li>กด <strong>"บันทึกงาน"</strong> → งานขึ้นคิว</li>
+                                            <li>ในตาราง กด <strong>"จัดรถ"</strong> → เลือกรถ+คนขับ → ยืนยัน</li>
+                                            <li>หรือกด <strong>"เลือก"</strong> จากตารางรถว่างด้านล่าง</li>
+                                        </ol>
                                     </div>
-                                    <div style="border: 2px solid #dbeafe; padding: 1rem; border-radius: 8px;">
-                                        <strong>💰 Invoice & Packing List</strong>
-                                        <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
-                                            - Invoice ต้นฉบับ<br>
-                                            - Packing List<br>
-                                            - Sales Contract
-                                        </p>
+                                    <div style="background:#f8fafc;padding:1.1rem;border-radius:8px;">
+                                        <strong>📡 ติดตามรถ — อัพเดทสถานะ</strong>
+                                        <ul style="padding-left:1.5rem;line-height:2;margin-top:.5rem;margin-bottom:0;">
+                                            <li>ดูรถทุกคันที่วิ่งอยู่ + ETA ปลายทาง</li>
+                                            <li>กด <strong>"ติดต่อ"</strong> → ดูเบอร์โทร + Line ID คนขับ</li>
+                                            <li>กด <strong>"ส่งของแล้ว"</strong> เมื่อรถถึงปลายทาง → สถานะเปลี่ยนเป็น "เสร็จแล้ว"</li>
+                                        </ul>
                                     </div>
-                                    <div style="border: 2px solid #dbeafe; padding: 1rem; border-radius: 8px;">
-                                        <strong>📦 ใบขน (Customs Declaration)</strong>
-                                        <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
-                                            - ใบขนส่งออก (Export Declaration)<br>
-                                            - เอกสารประกอบการผ่านด่าน
-                                        </p>
-                                    </div>
-                                </div>
-                                
-                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">5.2 สถานะเอกสาร (Document Status Flow)</h3>
-                                <div style="background: white; border: 2px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
-                                    <div class="timeline" style="padding-left: 2rem;">
-                                        <div class="timeline-item completed">
-                                            <div class="timeline-content">
-                                                <div class="timeline-title">1️⃣ สร้างเอกสาร</div>
-                                                <div class="timeline-desc">เจ้าหน้าที่สร้างเอกสารและกรอกข้อมูล</div>
-                                            </div>
-                                        </div>
-                                        <div class="timeline-item completed">
-                                            <div class="timeline-content">
-                                                <div class="timeline-title">2️⃣ รอตรวจสอบภายใน</div>
-                                                <div class="timeline-desc">หัวหน้าทีมตรวจสอบความถูกต้อง (1-2 ชั่วโมง)</div>
-                                            </div>
-                                        </div>
-                                        <div class="timeline-item">
-                                            <div class="timeline-content">
-                                                <div class="timeline-title">3️⃣ ยื่นขออนุมัติหน่วยงานรัฐ</div>
-                                                <div class="timeline-desc">ส่งเอกสารไป กรมการค้าต่างประเทศ/สำนักงานมาตรฐาน (1-3 วัน)</div>
-                                            </div>
-                                        </div>
-                                        <div class="timeline-item">
-                                            <div class="timeline-content">
-                                                <div class="timeline-title">4️⃣ ได้รับการอนุมัติ</div>
-                                                <div class="timeline-desc">ได้รับเลขที่อนุมัติและตราประทับ</div>
-                                            </div>
-                                        </div>
-                                        <div class="timeline-item">
-                                            <div class="timeline-content">
-                                                <div class="timeline-title">5️⃣ พร้อมยิงใบขน ✅</div>
-                                                <div class="timeline-desc">สามารถส่งข้อมูลเข้าระบบศุลกากรได้</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">5.3 การติดตามเอกสารของตู้</h3>
-                                <p style="line-height: 1.8; margin-bottom: 1rem;">
-                                    ในหน้า "รายละเอียดงาน" จะมีส่วน <strong>"📄 เอกสารประกอบ"</strong> แสดง:
-                                </p>
-                                <div style="background: #f8fafc; padding: 1.25rem; border-radius: 10px; margin-bottom: 1rem;">
-                                    <div style="display: grid; gap: 0.75rem;">
-                                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: white; border-radius: 8px;">
-                                            <div>
-                                                <strong>ใบรับรอง (พ.ก.7)</strong>
-                                                <div style="font-size: 0.85rem; color: var(--gray);">เลขที่: P-SSC25N008</div>
-                                            </div>
-                                            <span class="status status-delivered"><span class="status-dot"></span>อนุมัติแล้ว</span>
-                                        </div>
-                                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: white; border-radius: 8px;">
-                                            <div>
-                                                <strong>Invoice</strong>
-                                                <div style="font-size: 0.85rem; color: var(--gray);">เลขที่: INV-2026-0423</div>
-                                            </div>
-                                            <span class="status status-delivered"><span class="status-dot"></span>อนุมัติแล้ว</span>
-                                        </div>
-                                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: white; border-radius: 8px;">
-                                            <div>
-                                                <strong>ใบขนสินค้าขาออก</strong>
-                                                <div style="font-size: 0.85rem; color: var(--gray);">รออนุมัติจากศุลกากร</div>
-                                            </div>
-                                            <span class="status status-waiting"><span class="status-dot"></span>รอศุลกากร</span>
-                                        </div>
-                                    </div>
-                                    <div style="margin-top: 1rem; padding: 1rem; background: #dcfce7; border-radius: 8px; border: 2px solid #86efac;">
-                                        <strong style="color: #166534;">✅ สรุป: ครบ 2/3 เอกสาร - รอเอกสารใบขนอนุมัติ</strong>
-                                    </div>
-                                </div>
-                                
-                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">5.4 การขอแก้ไขเอกสาร (Approval Workflow)</h3>
-                                <div style="background: #fef3c7; padding: 1.25rem; border-radius: 10px; border: 2px solid #fcd34d; margin-bottom: 1rem;">
-                                    <p style="line-height: 1.8; color: #78350f; margin-bottom: 1rem;">
-                                        <strong>หากต้องแก้ไขเอกสารที่ผ่านการอนุมัติแล้ว</strong> ต้องผ่านการอนุมัติจากหัวหน้างาน:
-                                    </p>
-                                    <ol style="padding-left: 1.5rem; line-height: 2; color: #78350f;">
-                                        <li>เจ้าหน้าที่กด "✏️ ขอแก้ไข" และระบุเหตุผล</li>
-                                        <li>ระบบส่งการแจ้งเตือนไปหัวหน้างาน</li>
-                                        <li>หัวหน้าตรวจสอบและอนุมัติ/ปฏิเสธ</li>
-                                        <li>ถ้าอนุมัติ → แก้ไขได้ + บันทึก Log</li>
-                                        <li>ถ้าปฏิเสธ → เอกสารยังคงเดิม</li>
-                                    </ol>
-                                </div>
-                                
-                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">5.5 รายงานสถิติเอกสาร</h3>
-                                <p style="line-height: 1.8; margin-bottom: 1rem;">
-                                    ระบบบันทึก Log ทุกการเปลี่ยนแปลงและแสดงสถิติ:
-                                </p>
-                                <ul style="padding-left: 1.5rem; line-height: 2; margin-bottom: 1rem;">
-                                    <li>จำนวนเอกสารที่สร้างแต่ละประเภท</li>
-                                    <li>เวลาเฉลี่ยในการอนุมัติ</li>
-                                    <li>อัตราการแก้ไข/ยกเลิก</li>
-                                    <li>ผู้ทำงานแต่ละคน - ประสิทธิภาพ</li>
-                                </ul>
-                            </div>
-                            
-                            <!-- Section 6 -->
-                            <div id="manual-workflow" class="manual-section">
-                                <h2 style="font-family: 'Kanit'; color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">6. Workflow การทำงานแบบเต็ม</h2>
-                                
-                                <div style="background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%); padding: 2rem; border-radius: 12px; border: 2px solid #dbeafe; margin-bottom: 1.5rem;">
-                                    <h3 style="color: var(--primary); margin-bottom: 1.5rem; text-align: center;">📋 ขั้นตอนการทำงานตั้งแต่ต้นจนจบ</h3>
-                                    
-                                    <div style="display: grid; gap: 1.5rem;">
-                                        <div style="background: white; padding: 1.25rem; border-radius: 10px; border-left: 4px solid #3b82f6;">
-                                            <strong style="color: var(--primary);">1. รับออเดอร์จากลูกค้า</strong>
-                                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
-                                                ✓ ลูกค้าแจ้งความต้องการ<br>
-                                                ✓ CS Team สร้างงานในระบบ (RN Number)<br>
-                                                ✓ บันทึกข้อมูลสินค้า ปลายทาง ล้ง
-                                            </p>
-                                        </div>
-                                        
-                                        <div style="background: white; padding: 1.25rem; border-radius: 10px; border-left: 4px solid #10b981;">
-                                            <strong style="color: var(--secondary);">2. จัดรถและคนขับ</strong>
-                                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
-                                                ✓ ตรวจสอบรถว่าง<br>
-                                                ✓ มอบหมายคนขับ<br>
-                                                ✓ ส่งรายละเอียดให้คนขับผ่านระบบ
-                                            </p>
-                                        </div>
-                                        
-                                        <div style="background: white; padding: 1.25rem; border-radius: 10px; border-left: 4px solid #f59e0b;">
-                                            <strong style="color: var(--warning);">3. เข้ารับสินค้าที่ล้ง</strong>
-                                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
-                                                ✓ คนขับเข้าล้งตามเวลานัด<br>
-                                                ✓ อัพเดทสถานะ "เข้าล้ง"<br>
-                                                ✓ บรรทุกสินค้า ปิด SEAL<br>
-                                                ✓ อัพเดท "ออกจากล้ง" พร้อมเวลา
-                                            </p>
-                                        </div>
-                                        
-                                        <div style="background: white; padding: 1.25rem; border-radius: 10px; border-left: 4px solid #ec4899;">
-                                            <strong style="color: #ec4899;">4. เตรียมเอกสาร (พร้อมกับขั้นตอน 3)</strong>
-                                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
-                                                ✓ ทีมเอกสารสร้าง Invoice + Packing List<br>
-                                                ✓ ยื่นขอใบรับรอง (พ.ก.7)<br>
-                                                ✓ รอการอนุมัติจากกรมการค้า (1-3 วัน)<br>
-                                                ✓ ได้รับเอกสารครบ → เตรียมยิงใบขน
-                                            </p>
-                                        </div>
-                                        
-                                        <div style="background: white; padding: 1.25rem; border-radius: 10px; border-left: 4px solid #8b5cf6;">
-                                            <strong style="color: #8b5cf6;">5. ขนส่งและผ่านด่าน</strong>
-                                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
-                                                ✓ อัพเดท "กำลังขนส่ง"<br>
-                                                ✓ ถึงด่าน → "รอข้ามด่าน"<br>
-                                                ✓ ยิงใบขนเข้าระบบศุลกากร<br>
-                                                ✓ ผ่านด่าน → "ข้ามด่านแล้ว"
-                                            </p>
-                                        </div>
-                                        
-                                        <div style="background: white; padding: 1.25rem; border-radius: 10px; border-left: 4px solid #06b6d4;">
-                                            <strong style="color: var(--info);">6. ส่งมอบและปิดงาน</strong>
-                                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
-                                                ✓ ส่งมอบสินค้าถึงปลายทาง<br>
-                                                ✓ อัพเดท "ส่งมอบแล้ว"<br>
-                                                ✓ บันทึกข้อมูลตู้กลับ<br>
-                                                ✓ ปิดงาน และสร้างรายงาน
-                                            </p>
-                                        </div>
+                                    <div style="background:#f8fafc;padding:1.1rem;border-radius:8px;">
+                                        <strong>🔧 แจ้งซ่อมรถ — อนุมัติและปิดงาน</strong>
+                                        <ul style="padding-left:1.5rem;line-height:2;margin-top:.5rem;margin-bottom:0;">
+                                            <li>กด <strong>"อนุมัติ"</strong> ต่อใบที่สถานะ "รออนุมัติ" → ส่งให้ช่างดำเนินการ</li>
+                                            <li>กด <strong>"ซ่อมเสร็จ"</strong> เมื่องานซ่อมเสร็จ → รถกลับมาสถานะ "ว่าง"</li>
+                                            <li>กด <strong>"แจ้งซ่อมใหม่"</strong> เพื่อยื่นใบในนามตัวเอง</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                            
-                            <!-- Section 7 -->
-                            <div id="manual-tips" class="manual-section">
-                                <h2 style="font-family: 'Kanit'; color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">7. Tips & Tricks</h2>
-                                
-                                <div style="display: grid; gap: 1rem; margin-bottom: 2rem;">
-                                    <div style="background: #d1fae5; padding: 1.25rem; border-radius: 10px; border-left: 4px solid var(--secondary);">
-                                        <strong style="color: #065f46;">💡 ใช้ Auto-Complete ให้เป็น</strong>
-                                        <p style="color: #047857; margin-top: 0.5rem; line-height: 1.8;">
-                                            พิมพ์แค่ 2-3 ตัวอักษรแรก ระบบจะแนะนำข้อมูลจาก Master Data 
-                                            ทำให้ไม่ต้องพิมพ์ซ้ำ และลดข้อผิดพลาด
-                                        </p>
+
+                            <!-- 7. Finance -->
+                            <div id="m-finance" class="manual-section">
+                                <h2 style="font-family:'Kanit';color:var(--primary);margin-top:2rem;margin-bottom:1rem;">7. 💰 ฝ่ายการเงิน</h2>
+                                <div style="background:#fef9c3;padding:1rem;border-radius:8px;border-left:4px solid #f59e0b;margin-bottom:1rem;">
+                                    <strong>เข้าด้วย:</strong> <code style="background:#fff;padding:2px 6px;border-radius:4px;">finance / fin123</code>
+                                    &nbsp;|&nbsp; เข้าได้เฉพาะ <strong>Fleet Hub</strong>
+                                </div>
+                                <div style="display:grid;gap:.75rem;">
+                                    <div style="background:#f8fafc;padding:1.1rem;border-radius:8px;">
+                                        <strong>💰 ค่าเที่ยว — คำนวณและจ่ายเงิน</strong>
+                                        <ol style="padding-left:1.5rem;line-height:2.2;margin-top:.5rem;margin-bottom:0;">
+                                            <li>เข้าหน้า <strong>"ค่าเที่ยว"</strong></li>
+                                            <li>ตั้งค่าเรทในส่วน "ตั้งค่าเรทค่าเที่ยว": เรทมาตรฐาน (บาท/km), เรทเร่งด่วน, โบนัส OTP → กด "บันทึกเรท"</li>
+                                            <li>ตรวจตารางรายคนขับ: เที่ยว × เรท + โบนัส = ยอดสุทธิ</li>
+                                            <li>กด <strong>"จ่ายเงิน"</strong> ต่อแถว เมื่อโอนเงินแล้ว → สถานะเปลี่ยนเป็น "จ่ายแล้ว"</li>
+                                            <li>กด <strong>"Export"</strong> เพื่อดาวน์โหลดสรุปประจำเดือน</li>
+                                        </ol>
                                     </div>
-                                    
-                                    <div style="background: #dbeafe; padding: 1.25rem; border-radius: 10px; border-left: 4px solid var(--primary);">
-                                        <strong style="color: #1e40af;">🔍 ค้นหาอย่างรวดเร็ว</strong>
-                                        <p style="color: #1e40af; margin-top: 0.5rem; line-height: 1.8;">
-                                            ช่องค้นหาที่ Dashboard สามารถค้นหาได้ทั้ง: RN Number, เบอร์ตู้, 
-                                            ชื่อลูกค้า, หรือแม้แต่ชื่อคนขับ - พิมพ์ไปค้นไป Real-time
-                                        </p>
-                                    </div>
-                                    
-                                    <div style="background: #fef3c7; padding: 1.25rem; border-radius: 10px; border-left: 4px solid var(--warning);">
-                                        <strong style="color: #92400e;">⚡ Quick Actions คือหัวใจ</strong>
-                                        <p style="color: #92400e; margin-top: 0.5rem; line-height: 1.8;">
-                                            ใช้ Quick Actions แทนการเข้าเมนู จะเร็วกว่า 3 เท่า 
-                                            - ทำงานซ้ำ ๆ ได้รวดเร็วมาก
-                                        </p>
-                                    </div>
-                                    
-                                    <div style="background: #fce7f3; padding: 1.25rem; border-radius: 10px; border-left: 4px solid #ec4899;">
-                                        <strong style="color: #9f1239;">📱 ใช้บนมือถือได้</strong>
-                                        <p style="color: #9f1239; margin-top: 0.5rem; line-height: 1.8;">
-                                            ระบบรองรับมือถือ - คนขับสามารถอัพเดทสถานะจากมือถือได้ทันที
-                                            ไม่ต้องรอกลับออฟฟิศ
-                                        </p>
+                                    <div style="background:#f8fafc;padding:1.1rem;border-radius:8px;">
+                                        <strong>⛽ น้ำมัน — บันทึกและติดตามต้นทุน</strong>
+                                        <ol style="padding-left:1.5rem;line-height:2.2;margin-top:.5rem;margin-bottom:0;">
+                                            <li>อัพเดท <strong>เรทน้ำมัน</strong> ในกล่องซ้าย (บาท/ลิตร) → กด "อัพ"</li>
+                                            <li>บันทึกการเติม: เลือกรถ → วันที่ → จำนวนลิตร → เลขไมล์ → กด "บันทึก"</li>
+                                            <li>ระบบคำนวณ km/L อัตโนมัติ + ต้นทุนรวม</li>
+                                            <li>ดูกราฟ "ประสิทธิภาพน้ำมันต่อรถ" เปรียบเทียบทั้งกองรถ</li>
+                                        </ol>
                                     </div>
                                 </div>
-                                
-                                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 12px; text-align: center; margin-top: 3rem;">
-                                    <h3 style="font-family: 'Kanit'; font-size: 1.5rem; margin-bottom: 1rem;">🎉 พร้อมใช้งานแล้ว!</h3>
-                                    <p style="font-size: 1.1rem; opacity: 0.9; line-height: 1.8;">
-                                        หากมีคำถามเพิ่มเติม สามารถติดต่อทีม IT Support<br>
-                                        หรือดูวิดีโอสอนใช้งานได้ที่เมนู "🎬 วิดีโอสอนใช้งาน"
+                            </div>
+
+                            <!-- 8. Driver -->
+                            <div id="m-driver" class="manual-section">
+                                <h2 style="font-family:'Kanit';color:var(--primary);margin-top:2rem;margin-bottom:1rem;">8. 🚚 คนขับรถ</h2>
+                                <div style="background:#fed7aa;padding:1rem;border-radius:8px;border-left:4px solid #f97316;margin-bottom:1rem;">
+                                    <strong>เข้าด้วย:</strong> <code style="background:#fff;padding:2px 6px;border-radius:4px;">driver / driver123</code>
+                                    &nbsp;|&nbsp; เข้าได้เฉพาะหน้า <strong>"แจ้งซ่อม"</strong> (ทั้ง Container Hub และ Fleet Hub)
+                                </div>
+                                <div style="display:grid;gap:.75rem;">
+                                    <div style="background:#f8fafc;padding:1.1rem;border-radius:8px;">
+                                        <strong>🚗 แจ้งซ่อมรถ (Fleet Hub) — ขั้นตอน</strong>
+                                        <ol style="padding-left:1.5rem;line-height:2.2;margin-top:.5rem;margin-bottom:0;">
+                                            <li>เปิด fleet-hub.html → Login → ระบบพาเข้าหน้าแจ้งซ่อมอัตโนมัติ</li>
+                                            <li>กด <strong>"แจ้งซ่อมใหม่"</strong></li>
+                                            <li>เลือกทะเบียนรถ → อธิบายอาการ/ปัญหาชัดเจน</li>
+                                            <li>เลือกความเร่งด่วน: 🟢 ต่ำ / 🟡 กลาง / 🔴 สูง</li>
+                                            <li>ใส่ชื่อผู้แจ้ง → กด <strong>"ส่งใบแจ้งซ่อม"</strong></li>
+                                            <li>รอทีมจัดรถ/ผู้จัดการอนุมัติ</li>
+                                        </ol>
+                                    </div>
+                                    <div style="background:#fff7ed;padding:1rem;border-radius:8px;">
+                                        <strong style="color:#9a3412;">💡 ระดับความเร่งด่วน</strong>
+                                        <ul style="padding-left:1.5rem;margin-top:.5rem;line-height:2;margin-bottom:0;">
+                                            <li>🟢 <strong>ต่ำ</strong> — ยังขับได้ ซ่อมได้ภายหลัง เช่น ไฟขาด เบาะฉีก</li>
+                                            <li>🟡 <strong>กลาง</strong> — ซ่อมภายใน 3 วัน เช่น แอร์ไม่เย็น น้ำมันรั่วนิดหน่อย</li>
+                                            <li>🔴 <strong>สูง</strong> — รถออกงานไม่ได้ ต้องซ่อมด่วน เช่น ยางแตก เบรคไม่ดี</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 9. Documentation -->
+                            <div id="m-doc" class="manual-section">
+                                <h2 style="font-family:'Kanit';color:var(--primary);margin-top:2rem;margin-bottom:1rem;">9. 📄 ฝ่ายเอกสาร</h2>
+                                <div style="background:#f3f4f6;padding:1rem;border-radius:8px;border-left:4px solid #6b7280;margin-bottom:1rem;">
+                                    <strong>เข้าด้วย:</strong> <code style="background:#fff;padding:2px 6px;border-radius:4px;">doc / doc123</code>
+                                    &nbsp;|&nbsp; เข้าได้: หน้าหลัก (เต็ม) + Container Hub (Dashboard, ID Card)
+                                </div>
+                                <div style="display:grid;gap:.75rem;">
+                                    <div style="background:#f8fafc;padding:1.1rem;border-radius:8px;">
+                                        <strong>🏠 หน้าหลัก — งานเอกสาร</strong>
+                                        <ol style="padding-left:1.5rem;line-height:2.2;margin-top:.5rem;margin-bottom:0;">
+                                            <li>กด <strong>"สร้างเอกสาร"</strong> → เลือกประเภท → กรอกข้อมูล → บันทึก</li>
+                                            <li>ดูสถานะเอกสารในรายการงาน — ไอคอนสีแสดงสถานะ</li>
+                                            <li>ค้นหาเอกสารด้วย RN Number ในช่อง Search</li>
+                                        </ol>
+                                    </div>
+                                    <div style="background:#f8fafc;padding:1.1rem;border-radius:8px;">
+                                        <strong>📦 Container Hub — ดูข้อมูลตู้</strong>
+                                        <ul style="padding-left:1.5rem;line-height:2;margin-top:.5rem;margin-bottom:0;">
+                                            <li><strong>Dashboard</strong> — สถิติตู้ AV/DM/CL สำหรับอ้างอิงในเอกสาร</li>
+                                            <li><strong>ID Card</strong> — ค้นหาเบอร์ตู้ ดูประวัติครบ ใช้ประกอบการทำเอกสาร</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 10. Tips -->
+                            <div id="m-tips" class="manual-section">
+                                <h2 style="font-family:'Kanit';color:var(--primary);margin-top:2rem;margin-bottom:1rem;">10. 💡 Tips &amp; Tricks</h2>
+                                <div style="display:grid;gap:1rem;margin-bottom:2rem;">
+                                    <div style="background:#d1fae5;padding:1.25rem;border-radius:10px;border-left:4px solid #10b981;">
+                                        <strong style="color:#065f46;">⚡ Auto-Complete ประหยัดเวลา</strong>
+                                        <p style="color:#047857;margin-top:.5rem;line-height:1.8;margin-bottom:0;">พิมพ์แค่ 2-3 ตัวอักษรแรก ระบบแนะนำทันที — ลูกค้า, ล้ง, เบอร์ตู้ ไม่ต้องจำทั้งหมด</p>
+                                    </div>
+                                    <div style="background:#dbeafe;padding:1.25rem;border-radius:10px;border-left:4px solid #3b82f6;">
+                                        <strong style="color:#1e40af;">🤖 AI แนะนำรถ (Fleet Hub)</strong>
+                                        <p style="color:#1e40af;margin-top:.5rem;line-height:1.8;margin-bottom:0;">กด "AI แนะนำรถ" ก่อนสร้างงาน — วิเคราะห์ประเภทตู้ + OTP + Safety Score คนขับ ให้รถที่ดีที่สุด</p>
+                                    </div>
+                                    <div style="background:#fef9c3;padding:1.25rem;border-radius:10px;border-left:4px solid #eab308;">
+                                        <strong style="color:#92400e;">⚠️ แจ้งเตือนเอกสารรถ</strong>
+                                        <p style="color:#92400e;margin-top:.5rem;line-height:1.8;margin-bottom:0;">Fleet Hub → Dashboard แสดงแจ้งเตือนเมื่อ ภาษี/ประกัน/พรบ. จะหมดอายุใน 30 วัน — ดูแถบสีแดงด้านล่าง KPI</p>
+                                    </div>
+                                    <div style="background:#fce7f3;padding:1.25rem;border-radius:10px;border-left:4px solid #ec4899;">
+                                        <strong style="color:#9f1239;">📱 รองรับ Mobile</strong>
+                                        <p style="color:#9f1239;margin-top:.5rem;line-height:1.8;margin-bottom:0;">ทุกระบบรองรับมือถือ — คนขับแจ้งซ่อม, CS อัพเดทสถานะ ได้จากโทรศัพท์ทันที ไม่ต้องรอกลับออฟฟิศ</p>
+                                    </div>
+                                    <div style="background:#f3f4f6;padding:1.25rem;border-radius:10px;border-left:4px solid #6b7280;">
+                                        <strong style="color:#374151;">🔑 Session ข้ามหน้าอัตโนมัติ</strong>
+                                        <p style="color:#374151;margin-top:.5rem;line-height:1.8;margin-bottom:0;">Login ครั้งเดียว กด "จัดการตู้ Container" หรือ "ระบบรถ Fleet Hub" ได้เลย — ไม่ต้อง Login ซ้ำทุกหน้า</p>
+                                    </div>
+                                </div>
+                                <div style="background:linear-gradient(135deg,#1e40af 0%,#7c3aed 100%);color:white;padding:2rem;border-radius:12px;text-align:center;margin-top:2rem;">
+                                    <h3 style="font-family:'Kanit';font-size:1.5rem;margin-bottom:.75rem;">🎉 พร้อมใช้งานแล้ว!</h3>
+                                    <p style="font-size:1rem;opacity:.9;line-height:2;margin:0;">
+                                        หน้าหลัก · Container Hub · Fleet Hub<br>
+                                        ทุกระบบเชื่อมกัน ทำงานได้เลย 🚛📦📄
                                     </p>
                                 </div>
                             </div>
