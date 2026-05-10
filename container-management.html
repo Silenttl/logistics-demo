@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Container Management (ISO Standard) - ICL Logistics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap');
+        body { font-family: 'Sarabun', sans-serif; background-color: #f8fafc; }
+        .iso-card { background: white; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .status-av { background-color: #dcfce7; color: #166534; } /* Available */
+        .status-dm { background-color: #fee2e2; color: #991b1b; } /* Damaged */
+        .status-cl { background-color: #fef9c3; color: #854d0e; } /* Cleaning */
+    </style>
+</head>
+<body>
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <!-- Sidebar -->
+        <div class="w-full md:w-72 bg-slate-900 text-white p-6">
+            <div class="mb-10 text-center">
+                <h1 class="text-2xl font-bold text-blue-400">ICL GLOBAL CY</h1>
+                <p class="text-xs text-gray-400">ISO 6346 COMPLIANT SYSTEM</p>
+            </div>
+            <nav class="space-y-2">
+                <a href="index.html" class="flex items-center p-3 rounded hover:bg-slate-800 transition"><i class="fas fa-arrow-left mr-3"></i> กลับหน้าหลัก</a>
+                <a href="#" class="flex items-center p-3 rounded bg-blue-600 shadow-lg"><i class="fas fa-th-large mr-3"></i> แผนผังลานตู้ (CY)</a>
+                <a href="#" class="flex items-center p-3 rounded hover:bg-slate-800"><i class="fas fa-tools mr-3"></i> งานซ่อมบำรุง (M&R)</a>
+                <a href="#" class="flex items-center p-3 rounded hover:bg-slate-800"><i class="fas fa-file-invoice mr-3"></i> รายงาน EIR</a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-6 md:p-10">
+            <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-800">ศูนย์บริหารจัดการตู้คอนเทนเนอร์</h2>
+                    <p class="text-gray-500">ติดตามสถานะ, ตำแหน่ง, และการซ่อมบำรุงตู้สากล</p>
+                </div>
+                <div class="flex gap-2">
+                    <button class="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition">
+                        <i class="fas fa-download mr-2"></i> Export EDI
+                    </button>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 shadow-md transition">
+                        <i class="fas fa-plus mr-2"></i> บันทึก Gate-In
+                    </button>
+                </div>
+            </header>
+
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="iso-card p-5 shadow-sm">
+                    <p class="text-gray-400 text-sm font-semibold uppercase">Total Inventory</p>
+                    <h3 class="text-3xl font-bold">2,450 <span class="text-sm font-normal text-gray-400">TEUs</span></h3>
+                </div>
+                <div class="iso-card p-5 border-l-4 border-green-500">
+                    <p class="text-green-600 text-sm font-semibold uppercase">Available (AV)</p>
+                    <h3 class="text-3xl font-bold">1,820</h3>
+                </div>
+                <div class="iso-card p-5 border-l-4 border-red-500">
+                    <p class="text-red-600 text-sm font-semibold uppercase">Damaged (DM)</p>
+                    <h3 class="text-3xl font-bold">124</h3>
+                </div>
+                <div class="iso-card p-5 border-l-4 border-yellow-500">
+                    <p class="text-yellow-600 text-sm font-semibold uppercase">Cleaning (CL)</p>
+                    <h3 class="text-3xl font-bold">85</h3>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                <!-- ISO Container Inventory -->
+                <div class="xl:col-span-2 iso-card overflow-hidden">
+                    <div class="p-6 border-b bg-gray-50 flex justify-between items-center">
+                        <h3 class="font-bold text-slate-700"><i class="fas fa-list-ul mr-2"></i>รายการตู้ในลานสากล</h3>
+                        <input type="text" placeholder="ค้นหาเบอร์ตู้ (เช่น MSKU...)" class="border rounded-md px-3 py-1 text-sm outline-none focus:ring-1 focus:ring-blue-400">
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider">
+                                    <th class="p-4 border-b">Container No.</th>
+                                    <th class="p-4 border-b">Type Code</th>
+                                    <th class="p-4 border-b">ISO Class</th>
+                                    <th class="p-4 border-b">Position</th>
+                                    <th class="p-4 border-b">Status</th>
+                                    <th class="p-4 border-b text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm text-slate-600">
+                                <tr class="border-b hover:bg-blue-50 transition">
+                                    <td class="p-4 font-bold text-blue-700">MSKU 928374 1</td>
+                                    <td class="p-4">45G1</td>
+                                    <td class="p-4">40' High Cube</td>
+                                    <td class="p-4"><span class="bg-slate-100 px-2 py-1 rounded">B-05-A3</span></td>
+                                    <td class="p-4"><span class="px-3 py-1 rounded-full text-xs font-bold status-av">AV</span></td>
+                                    <td class="p-4 text-center"><button class="text-slate-400 hover:text-blue-600"><i class="fas fa-edit"></i></button></td>
+                                </tr>
+                                <tr class="border-b hover:bg-blue-50 transition">
+                                    <td class="p-4 font-bold text-blue-700">TLLU 552210 9</td>
+                                    <td class="p-4">22G1</td>
+                                    <td class="p-4">20' Standard</td>
+                                    <td class="p-4"><span class="bg-slate-100 px-2 py-1 rounded">C-12-B1</span></td>
+                                    <td class="p-4"><span class="px-3 py-1 rounded-full text-xs font-bold status-dm">DM</span></td>
+                                    <td class="p-4 text-center"><button class="text-slate-400 hover:text-red-600"><i class="fas fa-tools"></i></button></td>
+                                </tr>
+                                <tr class="border-b hover:bg-blue-50 transition">
+                                    <td class="p-4 font-bold text-blue-700">SUDU 773821 4</td>
+                                    <td class="p-4">45R1</td>
+                                    <td class="p-4">40' Reefer HC</td>
+                                    <td class="p-4"><span class="bg-slate-100 px-2 py-1 rounded">R-01-C2</span></td>
+                                    <td class="p-4"><span class="px-3 py-1 rounded-full text-xs font-bold status-cl">CL</span></td>
+                                    <td class="p-4 text-center"><button class="text-slate-400 hover:text-blue-600"><i class="fas fa-edit"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Digital EIR & Maintenance Form -->
+                <div class="iso-card shadow-lg">
+                    <div class="p-6 border-b bg-slate-800 text-white">
+                        <h3 class="font-bold"><i class="fas fa-clipboard-check mr-2 text-orange-400"></i>Digital EIR Inspection</h3>
+                    </div>
+                    <div class="p-6">
+                        <form class="space-y-5">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Container Prefix/Number</label>
+                                <div class="flex gap-2">
+                                    <input type="text" placeholder="TLLU" class="w-1/3 border rounded p-2 bg-gray-50 uppercase">
+                                    <input type="text" placeholder="1234567" class="w-2/3 border rounded p-2 bg-gray-50">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">ISO Type Code</label>
+                                <select class="w-full border rounded p-2 text-sm bg-white">
+                                    <option>22G1 - 20' General Purpose</option>
+                                    <option selected>45G1 - 40' High Cube</option>
+                                    <option>45R1 - 40' Reefer HC</option>
+                                    <option>22T1 - 20' Tank Container</option>
+                                </select>
+                            </div>
+                            <div class="p-4 bg-orange-50 rounded-lg border border-orange-100">
+                                <p class="text-xs font-bold text-orange-700 uppercase mb-3">Damage Checklist (ISO Code)</p>
+                                <div class="grid grid-cols-2 gap-2 text-sm">
+                                    <label class="flex items-center"><input type="checkbox" class="mr-2"> [DE] Dent (บุบ)</label>
+                                    <label class="flex items-center"><input type="checkbox" class="mr-2"> [HO] Hole (รู)</label>
+                                    <label class="flex items-center"><input type="checkbox" class="mr-2"> [BR] Broken (หัก)</label>
+                                    <label class="flex items-center"><input type="checkbox" class="mr-2"> [RU] Rust (สนิม)</label>
+                                </div>
+                            </div>
+                            <button type="button" class="w-full bg-slate-900 text-white py-3 rounded-lg font-bold hover:bg-slate-800 transition shadow-md">
+                                SUBMIT INSPECTION DATA
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
