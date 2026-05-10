@@ -8,40 +8,12 @@
 
 ## 🔐 Demo Accounts
 
-# 🚛 Logistics Demo - ระบบจัดการขนส่งและเอกสาร v2.0
-
-ระบบสาธิตการบริหารจัดการงาน Logistics แบบครบวงจร ตั้งแต่การสร้างงานด่วน การติดตามตู้คอนเทนเนอร์ ไปจนถึงการจัดการเอกสารส่งออก
-
-## 🚀 ฟีเจอร์หลัก (Key Features)
-* **Quick Login:** ระบบล็อกอินด่วนสำหรับทดสอบตามสิทธิ์ผู้ใช้งาน (Admin, CS, Driver, Document)
-* **Quick Actions:** สร้างงานใหม่ จัดรถ และอัปเดตสถานะได้ในคลิกเดียวจากหน้า Dashboard
-* **Container Tracking:** ระบบติดตามหมายเลขตู้คอนเทนเนอร์ เบอร์ซีล (Seal) และสถานะการคืนตู้ (Empty Return)
-* **Auto-Complete System:** ระบบช่วยเติมข้อมูลลูกค้าและหมายเลขตู้คอนเทนเนอร์อัตโนมัติ
-* **Job Timeline:** แสดงประวัติการทำงานย้อนหลังแบบละเอียดในแต่ละงานขนส่ง
-
-## 🔑 ข้อมูลสำหรับการทดสอบ (Test Accounts)
-สามารถใช้งานปุ่ม "Quick Login" ในหน้าแรก หรือกรอกข้อมูลดังนี้:
-- **Admin:** User: `admin` / Pass: `admin123` (จัดการได้ทุกส่วน)
-- **CS Team:** User: `cs` / Pass: `cs123` (สร้างและจัดการงาน)
-- **Driver:** User: `driver` / Pass: `driver123` (อัปเดตสถานะขนส่ง)
-
-## 🛠️ วิธีการติดตั้งและรันโปรเจค (Mac/Windows)
-1.  **Clone โปรเจค:**
-    ```bash
-    git clone [https://github.com/Silenttl/logistics-demo.git](https://github.com/Silenttl/logistics-demo.git)
-    ```
-2.  **เปิดด้วย VS Code:**
-    - ลากโฟลเดอร์โปรเจคเข้าโปรแกรม VS Code
-    - ติดตั้ง Extension **"Live Server"**
-3.  **รันระบบ:**
-    - คลิกขวาที่ไฟล์ `index.html` แล้วเลือก **"Open with Live Server"**
-
-## 📂 โครงสร้างไฟล์
-- `index.html`: ไฟล์หลักที่รวม HTML, CSS (UI Design), และ JavaScript (Logic ระบบ)
-- `README.md`: คู่มือการใช้งานและข้อมูลโปรเจค
-
----
-*พัฒนาเพื่อเป็นตัวอย่างระบบจัดการขนส่งสินค้า (TMS) สำหรับธุรกิจส่งออก*
+| Role | Username | Password |
+|------|----------|----------|
+| 👑 Admin | `admin` | `demo1234` |
+| 🚚 Fleet Manager | `fleet` | `demo1234` |
+| 📄 Document Manager | `document` | `demo1234` |
+| 📦 Container Manager | `container` | `demo1234` |
 
 ## ✨ Features
 
