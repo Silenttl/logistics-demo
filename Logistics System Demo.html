@@ -1,0 +1,2047 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚛 ICL Logistics System - ระบบจัดการขนส่ง</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=Kanit:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #06b6d4;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --light-gray: #f1f5f9;
+            --border: #e2e8f0;
+        }
+        
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        /* Login Screen */
+        .login-box {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 420px;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .login-header h1 {
+            font-family: 'Kanit', sans-serif;
+            font-size: 1.75rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-header p {
+            color: var(--gray);
+        }
+        
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .form-group input, select {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Sarabun', sans-serif;
+            transition: all 0.2s;
+        }
+        
+        .form-group input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+        
+        .btn {
+            padding: 0.875rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Sarabun', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            width: 100%;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+        
+        .quick-login {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .quick-login h3 {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+        
+        .quick-btns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+        
+        .quick-btn {
+            padding: 0.625rem;
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .quick-btn:hover {
+            border-color: var(--primary);
+            background: #eff6ff;
+        }
+        
+        /* Dashboard */
+        .dashboard {
+            display: none;
+            background: white;
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            height: 95vh;
+        }
+        
+        .dashboard.active {
+            display: flex;
+        }
+        
+        /* Header */
+        .dashboard-header {
+            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+            color: white;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .header-left h1 {
+            font-family: 'Kanit', sans-serif;
+            font-size: 1.5rem;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-info-header {
+            text-align: right;
+        }
+        
+        .user-info-header strong {
+            display: block;
+            font-size: 1rem;
+        }
+        
+        .user-info-header small {
+            opacity: 0.8;
+            font-size: 0.85rem;
+        }
+        
+        .btn-logout-header {
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .btn-logout-header:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        /* Main Content */
+        .dashboard-content {
+            display: flex;
+            height: calc(95vh - 80px);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: #f8fafc;
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+        }
+        
+        .sidebar-menu {
+            padding: 1rem;
+        }
+        
+        .menu-item {
+            padding: 0.875rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 500;
+            color: var(--dark);
+            transition: all 0.2s;
+        }
+        
+        .menu-item:hover {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .menu-item.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        
+        .menu-icon {
+            font-size: 1.25rem;
+        }
+        
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            background: white;
+        }
+        
+        .page-section {
+            display: none;
+        }
+        
+        .page-section.active {
+            display: block;
+        }
+        
+        /* Quick Actions Bar */
+        .quick-actions {
+            background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+            padding: 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            border: 2px solid #dbeafe;
+        }
+        
+        .quick-actions h3 {
+            font-family: 'Kanit', sans-serif;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        .action-btn {
+            padding: 1rem;
+            background: white;
+            border: 2px solid #dbeafe;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .action-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+        
+        .action-icon {
+            font-size: 1.75rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Stats Cards */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .stat-icon.blue { background: #dbeafe; }
+        .stat-icon.green { background: #d1fae5; }
+        .stat-icon.orange { background: #fed7aa; }
+        .stat-icon.purple { background: #e9d5ff; }
+        
+        .stat-value {
+            font-family: 'Kanit', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Job List */
+        .job-list {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+        
+        .job-list-header {
+            background: #f8fafc;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .job-list-title {
+            font-family: 'Kanit', sans-serif;
+            font-size: 1.25rem;
+            color: var(--dark);
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 0.5rem;
+            flex: 1;
+            max-width: 400px;
+            margin-left: 1rem;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 0.625rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .job-item {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .job-item:hover {
+            background: #f8fafc;
+        }
+        
+        .job-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .job-rn {
+            font-family: 'Kanit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .job-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.75rem;
+            font-size: 0.9rem;
+        }
+        
+        .detail-item {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .detail-label {
+            color: var(--gray);
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        /* Status Badge */
+        .status {
+            padding: 0.375rem 0.875rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+        
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-loading { background: #dbeafe; color: #1e40af; }
+        .status-transit { background: #d1fae5; color: #065f46; }
+        .status-delivered { background: #dcfce7; color: #166534; }
+        .status-waiting { background: #fed7aa; color: #9a3412; }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+            padding: 20px;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        @keyframes modalPop {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+        }
+        
+        .modal-title {
+            font-family: 'Kanit', sans-serif;
+            font-size: 1.5rem;
+            color: var(--dark);
+        }
+        
+        .btn-close {
+            background: none;
+            border: none;
+            font-size: 1.75rem;
+            cursor: pointer;
+            color: var(--gray);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .btn-close:hover {
+            background: var(--border);
+            color: var(--dark);
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .form-grid-full {
+            grid-column: 1 / -1;
+        }
+        
+        .autocomplete-wrapper {
+            position: relative;
+        }
+        
+        .autocomplete-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid var(--primary);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .autocomplete-list.active {
+            display: block;
+        }
+        
+        .autocomplete-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .autocomplete-item:hover {
+            background: #f8fafc;
+        }
+        
+        .autocomplete-item strong {
+            color: var(--primary);
+            display: block;
+        }
+        
+        .autocomplete-item small {
+            color: var(--gray);
+        }
+        
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            background: #f8fafc;
+        }
+        
+        .btn-cancel {
+            padding: 0.75rem 1.5rem;
+            background: white;
+            border: 2px solid var(--border);
+            color: var(--dark);
+        }
+        
+        .btn-cancel:hover {
+            background: var(--light-gray);
+        }
+        
+        .btn-success {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #059669;
+        }
+        
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.5rem;
+            top: 0.25rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+        
+        .timeline-item.completed::before {
+            background: var(--secondary);
+            box-shadow: 0 0 0 2px var(--secondary);
+        }
+        
+        .timeline-content {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .timeline-item.completed .timeline-content {
+            border-left-color: var(--secondary);
+        }
+        
+        .timeline-time {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 0.25rem;
+        }
+        
+        .timeline-title {
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+        
+        .timeline-desc {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                top: 0;
+                height: 100vh;
+                z-index: 1000;
+                transition: left 0.3s;
+            }
+            
+            .sidebar.mobile-open {
+                left: 0;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Loading */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-box">
+        <div class="login-header">
+            <h1>🚛 ICL Logistics</h1>
+            <p>ระบบจัดการขนส่งและเอกสาร</p>
+        </div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label>ชื่อผู้ใช้</label>
+                <input type="text" id="username" placeholder="Username" required>
+            </div>
+            
+            <div class="form-group">
+                <label>รหัสผ่าน</label>
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">
+                เข้าสู่ระบบ
+                <span id="loginSpinner" class="spinner hidden"></span>
+            </button>
+        </form>
+        
+        <div class="quick-login">
+            <h3>⚡ Quick Login (Demo)</h3>
+            <div class="quick-btns">
+                <button class="quick-btn" onclick="quickLogin('admin', 'admin123')">👑 Admin</button>
+                <button class="quick-btn" onclick="quickLogin('cs', 'cs123')">📞 CS Team</button>
+                <button class="quick-btn" onclick="quickLogin('driver', 'driver123')">🚚 คนขับ</button>
+                <button class="quick-btn" onclick="quickLogin('doc', 'doc123')">📄 เอกสาร</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard">
+        <div style="display: flex; flex-direction: column; width: 100%;">
+            <!-- Header -->
+            <div class="dashboard-header">
+                <div class="header-left">
+                    <h1>🚛 ICL Logistics</h1>
+                </div>
+                <div class="header-right">
+                    <div class="user-info-header">
+                        <strong id="userDisplayName">-</strong>
+                        <small id="userRole">-</small>
+                    </div>
+                    <button class="btn-logout-header" onclick="logout()">
+                        🚪 ออกจากระบบ
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="dashboard-content">
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <div class="sidebar-menu">
+                        <div class="menu-item active" onclick="showPage('dashboard')">
+                            <span class="menu-icon">📊</span>
+                            <span>Dashboard</span>
+                        </div>
+                        <div class="menu-item" onclick="showPage('quickCreate')">
+                            <span class="menu-icon">⚡</span>
+                            <span>สร้างงานด่วน</span>
+                        </div>
+                        <div class="menu-item" onclick="showPage('jobs')">
+                            <span class="menu-icon">📦</span>
+                            <span>รายการงานทั้งหมด</span>
+                        </div>
+                        <div class="menu-item" onclick="showPage('fleet')">
+                            <span class="menu-icon">🚚</span>
+                            <span>จัดการรถ</span>
+                        </div>
+                        <div class="menu-item" onclick="showPage('tracking')">
+                            <span class="menu-icon">📍</span>
+                            <span>ติดตามตู้</span>
+                        </div>
+                        <div class="menu-item" onclick="showPage('documents')">
+                            <span class="menu-icon">📄</span>
+                            <span>เอกสาร</span>
+                        </div>
+                        <div class="menu-item" onclick="showPage('customers')">
+                            <span class="menu-icon">👥</span>
+                            <span>ลูกค้า</span>
+                        </div>
+                        <div class="menu-item" onclick="showPage('manual')">
+                            <span class="menu-icon">📖</span>
+                            <span>คู่มือการใช้งาน</span>
+                        </div>
+                    </div>
+                </aside>
+                
+                <!-- Content Area -->
+                <div class="content-area">
+                    <!-- Dashboard Page -->
+                    <section id="dashboardPage" class="page-section active">
+                        <div class="quick-actions">
+                            <h3>⚡ Quick Actions - ทำงานด่วน</h3>
+                            <div class="action-grid">
+                                <div class="action-btn" onclick="openQuickJob()">
+                                    <span class="action-icon">🚀</span>
+                                    สร้างงานใหม่
+                                </div>
+                                <div class="action-btn" onclick="openAssignTruck()">
+                                    <span class="action-icon">🚚</span>
+                                    จัดรถ
+                                </div>
+                                <div class="action-btn" onclick="openUpdateStatus()">
+                                    <span class="action-icon">📍</span>
+                                    อัพเดทสถานะ
+                                </div>
+                                <div class="action-btn" onclick="openCreateDoc()">
+                                    <span class="action-icon">📄</span>
+                                    สร้างเอกสาร
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stats-row">
+                            <div class="stat-card">
+                                <div class="stat-header">
+                                    <div>
+                                        <div class="stat-value" id="statTotal">248</div>
+                                        <div class="stat-label">งานทั้งหมดเดือนนี้</div>
+                                    </div>
+                                    <div class="stat-icon blue">📦</div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-header">
+                                    <div>
+                                        <div class="stat-value" id="statTransit">42</div>
+                                        <div class="stat-label">กำลังขนส่ง</div>
+                                    </div>
+                                    <div class="stat-icon green">🚚</div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-header">
+                                    <div>
+                                        <div class="stat-value" id="statWaiting">18</div>
+                                        <div class="stat-label">รอข้ามด่าน</div>
+                                    </div>
+                                    <div class="stat-icon orange">⏳</div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-header">
+                                    <div>
+                                        <div class="stat-value" id="statLoading">12</div>
+                                        <div class="stat-label">กำลังบรรทุก</div>
+                                    </div>
+                                    <div class="stat-icon purple">📦</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="job-list">
+                            <div class="job-list-header">
+                                <h2 class="job-list-title">งานล่าสุด</h2>
+                                <div class="search-box">
+                                    <input type="text" placeholder="🔍 ค้นหา RN, เบอร์ตู้, ลูกค้า..." id="searchJobs" onkeyup="filterJobs()">
+                                </div>
+                            </div>
+                            <div id="jobListContainer">
+                                <!-- Jobs will be loaded here -->
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Other Pages -->
+                    <section id="quickCreatePage" class="page-section">
+                        <h2 style="font-family: 'Kanit'; margin-bottom: 1rem;">⚡ สร้างงานด่วน</h2>
+                        <p style="color: var(--gray); margin-bottom: 1.5rem;">ใช้เทมเพลตเพื่อสร้างงานได้เร็วขึ้น</p>
+                        
+                        <div class="action-grid">
+                            <div class="action-btn" onclick="openQuickJob('export-durian')">
+                                <span class="action-icon">🥭</span>
+                                Export ทุเรียน → จีน
+                            </div>
+                            <div class="action-btn" onclick="openQuickJob('import')">
+                                <span class="action-icon">📥</span>
+                                Import สินค้า
+                            </div>
+                            <div class="action-btn" onclick="openQuickJob('domestic')">
+                                <span class="action-icon">🏠</span>
+                                งานในประเทศ
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Documents Management Page -->
+                    <section id="documentsPage" class="page-section">
+                        <h2 style="font-family: 'Kanit'; margin-bottom: 1rem;">📄 จัดการเอกสาร</h2>
+                        <p style="color: var(--gray); margin-bottom: 1.5rem;">ติดตามสถานะเอกสารและการขออนุมัติจากหน่วยงานรัฐ</p>
+                        
+                        <div class="stats-row" style="margin-bottom: 1.5rem;">
+                            <div class="stat-card">
+                                <div class="stat-header">
+                                    <div>
+                                        <div class="stat-value">24</div>
+                                        <div class="stat-label">เอกสารรอดำเนินการ</div>
+                                    </div>
+                                    <div class="stat-icon orange">⏳</div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-header">
+                                    <div>
+                                        <div class="stat-value">18</div>
+                                        <div class="stat-label">รออนุมัติ</div>
+                                    </div>
+                                    <div class="stat-icon blue">🔍</div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-header">
+                                    <div>
+                                        <div class="stat-value">8</div>
+                                        <div class="stat-label">พร้อมยิงใบขน</div>
+                                    </div>
+                                    <div class="stat-icon green">✅</div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-header">
+                                    <div>
+                                        <div class="stat-value">3</div>
+                                        <div class="stat-label">ต้องแก้ไข</div>
+                                    </div>
+                                    <div class="stat-icon purple">⚠️</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="job-list">
+                            <div class="job-list-header">
+                                <h2 class="job-list-title">รายการเอกสาร</h2>
+                                <div class="search-box">
+                                    <input type="text" placeholder="🔍 ค้นหา RN, เบอร์ตู้, เลขที่เอกสาร...">
+                                </div>
+                                <button class="btn btn-success btn-sm" onclick="openCreateDocument()" style="margin-left: 0.5rem;">
+                                    + สร้างเอกสาร
+                                </button>
+                            </div>
+                            <div id="documentsListContainer">
+                                <!-- Documents will be loaded here -->
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Manual Page -->
+                    <section id="manualPage" class="page-section">
+                        <div style="max-width: 900px; margin: 0 auto;">
+                            <h1 style="font-family: 'Kanit'; font-size: 2rem; margin-bottom: 1rem;">📖 คู่มือการใช้งานระบบ</h1>
+                            <p style="color: var(--gray); margin-bottom: 2rem;">ICL Logistics Management System - เวอร์ชั่น 2.0</p>
+                            
+                            <!-- Table of Contents -->
+                            <div style="background: #f8fafc; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                                <h3 style="font-family: 'Kanit'; margin-bottom: 1rem;">📑 สารบัญ</h3>
+                                <ol style="padding-left: 1.5rem; line-height: 2;">
+                                    <li><a href="#manual-intro" style="color: var(--primary);">บทนำและภาพรวมระบบ</a></li>
+                                    <li><a href="#manual-login" style="color: var(--primary);">การเข้าสู่ระบบและสิทธิ์การใช้งาน</a></li>
+                                    <li><a href="#manual-dashboard" style="color: var(--primary);">Dashboard และ Quick Actions</a></li>
+                                    <li><a href="#manual-jobs" style="color: var(--primary);">การจัดการงานขนส่ง</a></li>
+                                    <li><a href="#manual-documents" style="color: var(--primary);">ระบบเอกสารและการขออนุมัติ</a></li>
+                                    <li><a href="#manual-workflow" style="color: var(--primary);">Workflow การทำงาน</a></li>
+                                    <li><a href="#manual-tips" style="color: var(--primary);">Tips & Tricks</a></li>
+                                </ol>
+                            </div>
+                            
+                            <!-- Section 1 -->
+                            <div id="manual-intro" class="manual-section">
+                                <h2 style="font-family: 'Kanit'; color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">1. บทนำและภาพรวมระบบ</h2>
+                                <p style="line-height: 1.8; margin-bottom: 1rem;">
+                                    <strong>ICL Logistics System</strong> เป็นระบบบริหารจัดการขนส่งและเอกสารแบบครบวงจร 
+                                    ออกแบบมาเพื่อเพิ่มประสิทธิภาพในการทำงาน ลดขั้นตอนที่ซ้ำซ้อน และติดตามสถานะแบบเรียลไทม์
+                                </p>
+                                <div style="background: #eff6ff; padding: 1.25rem; border-radius: 10px; border: 2px solid #dbeafe; margin-bottom: 1rem;">
+                                    <h4 style="color: var(--primary); margin-bottom: 0.75rem;">✨ ฟีเจอร์หลัก</h4>
+                                    <ul style="padding-left: 1.5rem; line-height: 2;">
+                                        <li><strong>Quick Actions</strong> - สร้างงานได้ใน 2 คลิก</li>
+                                        <li><strong>Auto-Complete</strong> - ระบบช่วยเติมข้อมูลอัตโนมัติ</li>
+                                        <li><strong>Timeline Tracking</strong> - ติดตามทุกขั้นตอนแบบเรียลไทม์</li>
+                                        <li><strong>Document Management</strong> - ระบบเอกสารพร้อมการขออนุมัติ</li>
+                                        <li><strong>Role-Based Access</strong> - แบ่งสิทธิ์การใช้งานตามตำแหน่ง</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <!-- Section 2 -->
+                            <div id="manual-login" class="manual-section">
+                                <h2 style="font-family: 'Kanit'; color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">2. การเข้าสู่ระบบและสิทธิ์การใช้งาน</h2>
+                                
+                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">2.1 วิธีเข้าสู่ระบบ</h3>
+                                <ol style="padding-left: 1.5rem; line-height: 2; margin-bottom: 1rem;">
+                                    <li>กรอกชื่อผู้ใช้และรหัสผ่าน</li>
+                                    <li>กดปุ่ม "เข้าสู่ระบบ"</li>
+                                    <li>หรือใช้ <strong>Quick Login</strong> สำหรับการทดสอบ</li>
+                                </ol>
+                                
+                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">2.2 ระดับสิทธิ์การใช้งาน</h3>
+                                <div style="display: grid; gap: 1rem; margin-bottom: 1rem;">
+                                    <div style="background: #fef3c7; padding: 1rem; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                                        <strong>👑 Admin (ผู้ดูแลระบบ)</strong>
+                                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                            <li>เข้าถึงได้ทุกฟีเจอร์</li>
+                                            <li>จัดการผู้ใช้งาน</li>
+                                            <li>อนุมัติการแก้ไขเอกสาร</li>
+                                            <li>ดูรายงานและสถิติทั้งหมด</li>
+                                        </ul>
+                                    </div>
+                                    <div style="background: #dbeafe; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--primary);">
+                                        <strong>📞 CS Team (ฝ่ายบริการลูกค้า)</strong>
+                                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                            <li>สร้างและจัดการงาน</li>
+                                            <li>จัดรถและคนขับ</li>
+                                            <li>สร้างเอกสาร</li>
+                                            <li>ติดตามสถานะ</li>
+                                        </ul>
+                                    </div>
+                                    <div style="background: #d1fae5; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--secondary);">
+                                        <strong>🚚 Driver (คนขับรถ)</strong>
+                                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                            <li>ดูงานของตัวเอง</li>
+                                            <li>อัพเดทสถานะการขนส่ง</li>
+                                            <li>ดูรายละเอียดเส้นทาง</li>
+                                        </ul>
+                                    </div>
+                                    <div style="background: #fce7f3; padding: 1rem; border-radius: 8px; border-left: 4px solid #ec4899;">
+                                        <strong>📄 Documentation (ฝ่ายเอกสาร)</strong>
+                                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                            <li>สร้างและจัดการเอกสารทั้งหมด</li>
+                                            <li>ยื่นขออนุมัติหน่วยงานรัฐ</li>
+                                            <li>ติดตามสถานะเอกสาร</li>
+                                            <li>สร้าง Invoice</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Section 3 -->
+                            <div id="manual-dashboard" class="manual-section">
+                                <h2 style="font-family: 'Kanit'; color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">3. Dashboard และ Quick Actions</h2>
+                                
+                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">3.1 หน้า Dashboard</h3>
+                                <p style="line-height: 1.8; margin-bottom: 1rem;">
+                                    Dashboard แสดงภาพรวมการทำงานทั้งหมด ประกอบด้วย:
+                                </p>
+                                <ul style="padding-left: 1.5rem; line-height: 2; margin-bottom: 1rem;">
+                                    <li><strong>Quick Actions</strong> - ปุ่มทำงานด่วน 4 ปุ่มหลัก</li>
+                                    <li><strong>สถิติแบบเรียลไทม์</strong> - จำนวนงาน, กำลังขนส่ง, รอข้าม, บรรทุก</li>
+                                    <li><strong>รายการงานล่าสุด</strong> - แสดงงาน 20 รายการล่าสุด</li>
+                                    <li><strong>ช่องค้นหา</strong> - ค้นหาด้วย RN, เบอร์ตู้, ลูกค้า</li>
+                                </ul>
+                                
+                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">3.2 Quick Actions - ทำงานได้เร็วขึ้น 3 เท่า</h3>
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1rem;">
+                                    <div style="border: 2px solid #dbeafe; padding: 1rem; border-radius: 8px;">
+                                        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🚀</div>
+                                        <strong>สร้างงานใหม่</strong>
+                                        <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
+                                            เปิดฟอร์มสร้างงานพร้อม Auto-generate RN Number
+                                        </p>
+                                    </div>
+                                    <div style="border: 2px solid #dbeafe; padding: 1rem; border-radius: 8px;">
+                                        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🚚</div>
+                                        <strong>จัดรถ</strong>
+                                        <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
+                                            เลือกงานและจัดรถพร้อมคนขับทันที
+                                        </p>
+                                    </div>
+                                    <div style="border: 2px solid #dbeafe; padding: 1rem; border-radius: 8px;">
+                                        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📍</div>
+                                        <strong>อัพเดทสถานะ</strong>
+                                        <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
+                                            อัพเดทสถานะงาน เช่น ถึงล้ง, ออกจากล้ง, ถึงด่าน
+                                        </p>
+                                    </div>
+                                    <div style="border: 2px solid #dbeafe; padding: 1rem; border-radius: 8px;">
+                                        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📄</div>
+                                        <strong>สร้างเอกสาร</strong>
+                                        <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
+                                            สร้างเอกสารส่งออกและขอใบอนุญาต
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Section 4 -->
+                            <div id="manual-jobs" class="manual-section">
+                                <h2 style="font-family: 'Kanit'; color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">4. การจัดการงานขนส่ง</h2>
+                                
+                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">4.1 สร้างงานใหม่ (Step by Step)</h3>
+                                <div style="background: #f8fafc; padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem;">
+                                    <ol style="padding-left: 1.5rem; line-height: 2.5;">
+                                        <li>
+                                            <strong>คลิก Quick Action "🚀 สร้างงานใหม่"</strong>
+                                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.25rem;">
+                                                ระบบจะ Auto-generate RN Number ให้อัตโนมัติ (เช่น RN20260510-001)
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <strong>กรอกข้อมูลพื้นฐาน</strong>
+                                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                                <li>CB Number - เลขที่คำขอส่งออก</li>
+                                                <li>วิธีข้าม - เลือกประเภทงาน</li>
+                                                <li>เบอร์ตู้ - พิมพ์ 3 ตัวแรกจะมี Auto-suggest</li>
+                                                <li>ขนาดตู้ - 40HC, 40HR, 45HR</li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <strong>กรอกข้อมูลลูกค้าและสถานที่</strong>
+                                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.25rem;">
+                                                ใช้ Auto-complete โดยพิมพ์ชื่อ ระบบจะแนะนำพร้อมข้อมูลติดต่อ
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <strong>เลือกสินค้าและปลายทาง</strong>
+                                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.25rem;">
+                                                เลือกจาก Dropdown หรือพิมพ์ค้นหา
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <strong>คลิก "✅ สร้างงาน"</strong>
+                                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.25rem;">
+                                                งานจะถูกสร้างและแสดงในรายการทันที
+                                            </p>
+                                        </li>
+                                    </ol>
+                                </div>
+                                
+                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">4.2 ดูรายละเอียดงาน</h3>
+                                <p style="line-height: 1.8; margin-bottom: 1rem;">
+                                    คลิกที่รายการงานใด ๆ จะเปิดหน้าต่างรายละเอียดที่แสดง:
+                                </p>
+                                <ul style="padding-left: 1.5rem; line-height: 2; margin-bottom: 1rem;">
+                                    <li><strong>ข้อมูลงานทั้งหมด</strong> - ตู้, ลูกค้า, สินค้า, ปลายทาง</li>
+                                    <li><strong>Timeline</strong> - แสดงประวัติทุกขั้นตอนพร้อมเวลา</li>
+                                    <li><strong>สถานะปัจจุบัน</strong> - กำลังทำอะไรอยู่</li>
+                                    <li><strong>เอกสารที่เกี่ยวข้อง</strong> - ลิงก์ไปยังเอกสารทั้งหมด</li>
+                                </ul>
+                                
+                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">4.3 สถานะของงาน</h3>
+                                <div style="display: grid; gap: 0.75rem; margin-bottom: 1rem;">
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                        <span class="status status-pending"><span class="status-dot"></span>รอดำเนินการ</span>
+                                        <span style="color: var(--gray);">- งานถูกสร้างแล้ว รอจัดรถ</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                        <span class="status status-loading"><span class="status-dot"></span>กำลังบรรทุก</span>
+                                        <span style="color: var(--gray);">- รถเข้าล้งแล้ว กำลังขึ้นสินค้า</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                        <span class="status status-transit"><span class="status-dot"></span>กำลังขนส่ง</span>
+                                        <span style="color: var(--gray);">- รถออกจากล้งแล้ว กำลังเดินทาง</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                        <span class="status status-waiting"><span class="status-dot"></span>รอข้ามด่าน</span>
+                                        <span style="color: var(--gray);">- ถึงด่านแล้ว รอผ่านด่าน</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                        <span class="status status-delivered"><span class="status-dot"></span>ส่งมอบแล้ว</span>
+                                        <span style="color: var(--gray);">- ส่งมอบสินค้าเรียบร้อย</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Section 5 - Documents -->
+                            <div id="manual-documents" class="manual-section">
+                                <h2 style="font-family: 'Kanit'; color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">5. ระบบเอกสารและการขออนุมัติ</h2>
+                                
+                                <div style="background: #fef3c7; padding: 1.25rem; border-radius: 10px; border: 2px solid #fcd34d; margin-bottom: 1.5rem;">
+                                    <h4 style="color: #92400e; margin-bottom: 0.75rem;">⚠️ สำคัญมาก!</h4>
+                                    <p style="line-height: 1.8; color: #78350f;">
+                                        ระบบเอกสารมี Workflow การอนุมัติ 3 ระดับ เพื่อให้แน่ใจว่าข้อมูลถูกต้องก่อนยิงใบขน
+                                    </p>
+                                </div>
+                                
+                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">5.1 ประเภทเอกสาร</h3>
+                                <div style="display: grid; gap: 1rem; margin-bottom: 1.5rem;">
+                                    <div style="border: 2px solid #dbeafe; padding: 1rem; border-radius: 8px;">
+                                        <strong>📋 ใบรับรอง (Certificate)</strong>
+                                        <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
+                                            - ใบรับรองถิ่นกำเนิดสินค้า (พ.ก.7)<br>
+                                            - ใบรับรองสุขอนามัย<br>
+                                            - ใบรับรอง GAP
+                                        </p>
+                                    </div>
+                                    <div style="border: 2px solid #dbeafe; padding: 1rem; border-radius: 8px;">
+                                        <strong>💰 Invoice & Packing List</strong>
+                                        <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
+                                            - Invoice ต้นฉบับ<br>
+                                            - Packing List<br>
+                                            - Sales Contract
+                                        </p>
+                                    </div>
+                                    <div style="border: 2px solid #dbeafe; padding: 1rem; border-radius: 8px;">
+                                        <strong>📦 ใบขน (Customs Declaration)</strong>
+                                        <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
+                                            - ใบขนส่งออก (Export Declaration)<br>
+                                            - เอกสารประกอบการผ่านด่าน
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">5.2 สถานะเอกสาร (Document Status Flow)</h3>
+                                <div style="background: white; border: 2px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                                    <div class="timeline" style="padding-left: 2rem;">
+                                        <div class="timeline-item completed">
+                                            <div class="timeline-content">
+                                                <div class="timeline-title">1️⃣ สร้างเอกสาร</div>
+                                                <div class="timeline-desc">เจ้าหน้าที่สร้างเอกสารและกรอกข้อมูล</div>
+                                            </div>
+                                        </div>
+                                        <div class="timeline-item completed">
+                                            <div class="timeline-content">
+                                                <div class="timeline-title">2️⃣ รอตรวจสอบภายใน</div>
+                                                <div class="timeline-desc">หัวหน้าทีมตรวจสอบความถูกต้อง (1-2 ชั่วโมง)</div>
+                                            </div>
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="timeline-content">
+                                                <div class="timeline-title">3️⃣ ยื่นขออนุมัติหน่วยงานรัฐ</div>
+                                                <div class="timeline-desc">ส่งเอกสารไป กรมการค้าต่างประเทศ/สำนักงานมาตรฐาน (1-3 วัน)</div>
+                                            </div>
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="timeline-content">
+                                                <div class="timeline-title">4️⃣ ได้รับการอนุมัติ</div>
+                                                <div class="timeline-desc">ได้รับเลขที่อนุมัติและตราประทับ</div>
+                                            </div>
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="timeline-content">
+                                                <div class="timeline-title">5️⃣ พร้อมยิงใบขน ✅</div>
+                                                <div class="timeline-desc">สามารถส่งข้อมูลเข้าระบบศุลกากรได้</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">5.3 การติดตามเอกสารของตู้</h3>
+                                <p style="line-height: 1.8; margin-bottom: 1rem;">
+                                    ในหน้า "รายละเอียดงาน" จะมีส่วน <strong>"📄 เอกสารประกอบ"</strong> แสดง:
+                                </p>
+                                <div style="background: #f8fafc; padding: 1.25rem; border-radius: 10px; margin-bottom: 1rem;">
+                                    <div style="display: grid; gap: 0.75rem;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: white; border-radius: 8px;">
+                                            <div>
+                                                <strong>ใบรับรอง (พ.ก.7)</strong>
+                                                <div style="font-size: 0.85rem; color: var(--gray);">เลขที่: P-SSC25N008</div>
+                                            </div>
+                                            <span class="status status-delivered"><span class="status-dot"></span>อนุมัติแล้ว</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: white; border-radius: 8px;">
+                                            <div>
+                                                <strong>Invoice</strong>
+                                                <div style="font-size: 0.85rem; color: var(--gray);">เลขที่: INV-2026-0423</div>
+                                            </div>
+                                            <span class="status status-delivered"><span class="status-dot"></span>อนุมัติแล้ว</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: white; border-radius: 8px;">
+                                            <div>
+                                                <strong>ใบขนสินค้าขาออก</strong>
+                                                <div style="font-size: 0.85rem; color: var(--gray);">รออนุมัติจากศุลกากร</div>
+                                            </div>
+                                            <span class="status status-waiting"><span class="status-dot"></span>รอศุลกากร</span>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: 1rem; padding: 1rem; background: #dcfce7; border-radius: 8px; border: 2px solid #86efac;">
+                                        <strong style="color: #166534;">✅ สรุป: ครบ 2/3 เอกสาร - รอเอกสารใบขนอนุมัติ</strong>
+                                    </div>
+                                </div>
+                                
+                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">5.4 การขอแก้ไขเอกสาร (Approval Workflow)</h3>
+                                <div style="background: #fef3c7; padding: 1.25rem; border-radius: 10px; border: 2px solid #fcd34d; margin-bottom: 1rem;">
+                                    <p style="line-height: 1.8; color: #78350f; margin-bottom: 1rem;">
+                                        <strong>หากต้องแก้ไขเอกสารที่ผ่านการอนุมัติแล้ว</strong> ต้องผ่านการอนุมัติจากหัวหน้างาน:
+                                    </p>
+                                    <ol style="padding-left: 1.5rem; line-height: 2; color: #78350f;">
+                                        <li>เจ้าหน้าที่กด "✏️ ขอแก้ไข" และระบุเหตุผล</li>
+                                        <li>ระบบส่งการแจ้งเตือนไปหัวหน้างาน</li>
+                                        <li>หัวหน้าตรวจสอบและอนุมัติ/ปฏิเสธ</li>
+                                        <li>ถ้าอนุมัติ → แก้ไขได้ + บันทึก Log</li>
+                                        <li>ถ้าปฏิเสธ → เอกสารยังคงเดิม</li>
+                                    </ol>
+                                </div>
+                                
+                                <h3 style="font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">5.5 รายงานสถิติเอกสาร</h3>
+                                <p style="line-height: 1.8; margin-bottom: 1rem;">
+                                    ระบบบันทึก Log ทุกการเปลี่ยนแปลงและแสดงสถิติ:
+                                </p>
+                                <ul style="padding-left: 1.5rem; line-height: 2; margin-bottom: 1rem;">
+                                    <li>จำนวนเอกสารที่สร้างแต่ละประเภท</li>
+                                    <li>เวลาเฉลี่ยในการอนุมัติ</li>
+                                    <li>อัตราการแก้ไข/ยกเลิก</li>
+                                    <li>ผู้ทำงานแต่ละคน - ประสิทธิภาพ</li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Section 6 -->
+                            <div id="manual-workflow" class="manual-section">
+                                <h2 style="font-family: 'Kanit'; color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">6. Workflow การทำงานแบบเต็ม</h2>
+                                
+                                <div style="background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%); padding: 2rem; border-radius: 12px; border: 2px solid #dbeafe; margin-bottom: 1.5rem;">
+                                    <h3 style="color: var(--primary); margin-bottom: 1.5rem; text-align: center;">📋 ขั้นตอนการทำงานตั้งแต่ต้นจนจบ</h3>
+                                    
+                                    <div style="display: grid; gap: 1.5rem;">
+                                        <div style="background: white; padding: 1.25rem; border-radius: 10px; border-left: 4px solid #3b82f6;">
+                                            <strong style="color: var(--primary);">1. รับออเดอร์จากลูกค้า</strong>
+                                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
+                                                ✓ ลูกค้าแจ้งความต้องการ<br>
+                                                ✓ CS Team สร้างงานในระบบ (RN Number)<br>
+                                                ✓ บันทึกข้อมูลสินค้า ปลายทาง ล้ง
+                                            </p>
+                                        </div>
+                                        
+                                        <div style="background: white; padding: 1.25rem; border-radius: 10px; border-left: 4px solid #10b981;">
+                                            <strong style="color: var(--secondary);">2. จัดรถและคนขับ</strong>
+                                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
+                                                ✓ ตรวจสอบรถว่าง<br>
+                                                ✓ มอบหมายคนขับ<br>
+                                                ✓ ส่งรายละเอียดให้คนขับผ่านระบบ
+                                            </p>
+                                        </div>
+                                        
+                                        <div style="background: white; padding: 1.25rem; border-radius: 10px; border-left: 4px solid #f59e0b;">
+                                            <strong style="color: var(--warning);">3. เข้ารับสินค้าที่ล้ง</strong>
+                                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
+                                                ✓ คนขับเข้าล้งตามเวลานัด<br>
+                                                ✓ อัพเดทสถานะ "เข้าล้ง"<br>
+                                                ✓ บรรทุกสินค้า ปิด SEAL<br>
+                                                ✓ อัพเดท "ออกจากล้ง" พร้อมเวลา
+                                            </p>
+                                        </div>
+                                        
+                                        <div style="background: white; padding: 1.25rem; border-radius: 10px; border-left: 4px solid #ec4899;">
+                                            <strong style="color: #ec4899;">4. เตรียมเอกสาร (พร้อมกับขั้นตอน 3)</strong>
+                                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
+                                                ✓ ทีมเอกสารสร้าง Invoice + Packing List<br>
+                                                ✓ ยื่นขอใบรับรอง (พ.ก.7)<br>
+                                                ✓ รอการอนุมัติจากกรมการค้า (1-3 วัน)<br>
+                                                ✓ ได้รับเอกสารครบ → เตรียมยิงใบขน
+                                            </p>
+                                        </div>
+                                        
+                                        <div style="background: white; padding: 1.25rem; border-radius: 10px; border-left: 4px solid #8b5cf6;">
+                                            <strong style="color: #8b5cf6;">5. ขนส่งและผ่านด่าน</strong>
+                                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
+                                                ✓ อัพเดท "กำลังขนส่ง"<br>
+                                                ✓ ถึงด่าน → "รอข้ามด่าน"<br>
+                                                ✓ ยิงใบขนเข้าระบบศุลกากร<br>
+                                                ✓ ผ่านด่าน → "ข้ามด่านแล้ว"
+                                            </p>
+                                        </div>
+                                        
+                                        <div style="background: white; padding: 1.25rem; border-radius: 10px; border-left: 4px solid #06b6d4;">
+                                            <strong style="color: var(--info);">6. ส่งมอบและปิดงาน</strong>
+                                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
+                                                ✓ ส่งมอบสินค้าถึงปลายทาง<br>
+                                                ✓ อัพเดท "ส่งมอบแล้ว"<br>
+                                                ✓ บันทึกข้อมูลตู้กลับ<br>
+                                                ✓ ปิดงาน และสร้างรายงาน
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Section 7 -->
+                            <div id="manual-tips" class="manual-section">
+                                <h2 style="font-family: 'Kanit'; color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">7. Tips & Tricks</h2>
+                                
+                                <div style="display: grid; gap: 1rem; margin-bottom: 2rem;">
+                                    <div style="background: #d1fae5; padding: 1.25rem; border-radius: 10px; border-left: 4px solid var(--secondary);">
+                                        <strong style="color: #065f46;">💡 ใช้ Auto-Complete ให้เป็น</strong>
+                                        <p style="color: #047857; margin-top: 0.5rem; line-height: 1.8;">
+                                            พิมพ์แค่ 2-3 ตัวอักษรแรก ระบบจะแนะนำข้อมูลจาก Master Data 
+                                            ทำให้ไม่ต้องพิมพ์ซ้ำ และลดข้อผิดพลาด
+                                        </p>
+                                    </div>
+                                    
+                                    <div style="background: #dbeafe; padding: 1.25rem; border-radius: 10px; border-left: 4px solid var(--primary);">
+                                        <strong style="color: #1e40af;">🔍 ค้นหาอย่างรวดเร็ว</strong>
+                                        <p style="color: #1e40af; margin-top: 0.5rem; line-height: 1.8;">
+                                            ช่องค้นหาที่ Dashboard สามารถค้นหาได้ทั้ง: RN Number, เบอร์ตู้, 
+                                            ชื่อลูกค้า, หรือแม้แต่ชื่อคนขับ - พิมพ์ไปค้นไป Real-time
+                                        </p>
+                                    </div>
+                                    
+                                    <div style="background: #fef3c7; padding: 1.25rem; border-radius: 10px; border-left: 4px solid var(--warning);">
+                                        <strong style="color: #92400e;">⚡ Quick Actions คือหัวใจ</strong>
+                                        <p style="color: #92400e; margin-top: 0.5rem; line-height: 1.8;">
+                                            ใช้ Quick Actions แทนการเข้าเมนู จะเร็วกว่า 3 เท่า 
+                                            - ทำงานซ้ำ ๆ ได้รวดเร็วมาก
+                                        </p>
+                                    </div>
+                                    
+                                    <div style="background: #fce7f3; padding: 1.25rem; border-radius: 10px; border-left: 4px solid #ec4899;">
+                                        <strong style="color: #9f1239;">📱 ใช้บนมือถือได้</strong>
+                                        <p style="color: #9f1239; margin-top: 0.5rem; line-height: 1.8;">
+                                            ระบบรองรับมือถือ - คนขับสามารถอัพเดทสถานะจากมือถือได้ทันที
+                                            ไม่ต้องรอกลับออฟฟิศ
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 12px; text-align: center; margin-top: 3rem;">
+                                    <h3 style="font-family: 'Kanit'; font-size: 1.5rem; margin-bottom: 1rem;">🎉 พร้อมใช้งานแล้ว!</h3>
+                                    <p style="font-size: 1.1rem; opacity: 0.9; line-height: 1.8;">
+                                        หากมีคำถามเพิ่มเติม สามารถติดต่อทีม IT Support<br>
+                                        หรือดูวิดีโอสอนใช้งานได้ที่เมนู "🎬 วิดีโอสอนใช้งาน"
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Job Modal -->
+    <div id="quickJobModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🚀 สร้างงานใหม่</h2>
+                <button class="btn-close" onclick="closeModal('quickJobModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="quickJobForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>🔢 RN Number (Auto)</label>
+                            <input type="text" id="rnNumber" value="RN20260510-001" readonly style="background: #f8fafc; font-weight: 700; color: var(--primary);">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>📋 CB Number</label>
+                            <input type="text" id="cbNumber" placeholder="2026-05-0001">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>🚛 วิธีข้าม</label>
+                            <select id="crossingMethod">
+                                <option value="">เลือกวิธีข้าม</option>
+                                <option value="งานนำเข้าหนองคาย">งานนำเข้าหนองคาย</option>
+                                <option value="งานนำเข้าเชียงของ">งานนำเข้าเชียงของ</option>
+                                <option value="ตู้รถไฟ NK">ตู้รถไฟ NK</option>
+                                <option value="บ่อเต็น">บ่อเต็น</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group autocomplete-wrapper">
+                            <label>📦 เบอร์ตู้</label>
+                            <input type="text" id="containerNumber" placeholder="TBCU2122923" oninput="showContainerSuggestions(this.value)">
+                            <div id="containerSuggestions" class="autocomplete-list"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>📏 ขนาดตู้</label>
+                            <select id="containerSize">
+                                <option value="">เลือกขนาด</option>
+                                <option value="40HC">40HC</option>
+                                <option value="40HR">40HR</option>
+                                <option value="45HR">45HR</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group autocomplete-wrapper">
+                            <label>👤 ลูกค้า</label>
+                            <input type="text" id="customer" placeholder="ชื่อลูกค้า" oninput="showCustomerSuggestions(this.value)">
+                            <div id="customerSuggestions" class="autocomplete-list"></div>
+                        </div>
+                        
+                        <div class="form-group autocomplete-wrapper">
+                            <label>🏭 ล้ง/สถานที่รับสินค้า</label>
+                            <input type="text" id="warehouse" placeholder="ชื่อล้ง" oninput="showWarehouseSuggestions(this.value)">
+                            <div id="warehouseSuggestions" class="autocomplete-list"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>📍 จังหวัด</label>
+                            <select id="province">
+                                <option value="">เลือกจังหวัด</option>
+                                <option value="จันทบุรี">จันทบุรี</option>
+                                <option value="สมุทปราการ">สมุทปราการ</option>
+                                <option value="นครปฐม">นครปฐม</option>
+                                <option value="ปทุมธานี">ปทุมธานี</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>📦 สินค้า</label>
+                            <select id="goods">
+                                <option value="">เลือกประเภทสินค้า</option>
+                                <option value="榴莲 (Durian)">榴莲 (Durian) - ทุเรียน</option>
+                                <option value="山竹(Mangosteen)">山竹 (Mangosteen) - มังคุด</option>
+                                <option value="龙眼(Longan)">龙眼 (Longan) - ลำไย</option>
+                                <option value="胶带 TAPE">胶带 TAPE - เทป</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>📊 จำนวนสินค้า</label>
+                            <input type="text" id="goodsQty" placeholder="เช่น 960 Bxs">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>🔐 SEAL NO.</label>
+                            <input type="text" id="sealNo" placeholder="TH-DOA 2-xxxxx">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>🌍 ด่านปลายทาง</label>
+                            <select id="destination">
+                                <option value="">เลือกด่าน</option>
+                                <option value="YOUYIGUAN, CHINA">YOUYIGUAN, CHINA - หยูอี้กวาน</option>
+                                <option value="MOHAN, CHINA">MOHAN, CHINA - โมฮาน</option>
+                                <option value="HEKOU, CHINA">HEKOU, CHINA - เหอโข่ว</option>
+                                <option value="NAKHON PHANOM">NAKHON PHANOM - นครพนม</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group form-grid-full">
+                            <label>📝 หมายเหตุ</label>
+                            <input type="text" id="notes" placeholder="รายละเอียดเพิ่มเติม...">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="closeModal('quickJobModal')">ยกเลิก</button>
+                <button class="btn btn-success" onclick="saveQuickJob()">
+                    ✅ สร้างงาน
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Job Detail Modal -->
+    <div id="jobDetailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="detailRN">-</h2>
+                <button class="btn-close" onclick="closeModal('jobDetailModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem;">
+                    <div>
+                        <h3 style="font-family: 'Kanit'; margin-bottom: 1rem;">📋 รายละเอียดงาน</h3>
+                        <div id="jobDetailContent"></div>
+                    </div>
+                    <div>
+                        <h3 style="font-family: 'Kanit'; margin-bottom: 1rem;">📍 Timeline</h3>
+                        <div class="timeline" id="jobTimeline"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Master Data
+        const masterData = {
+            customers: [
+                { id: 1, name: 'MAMMOTH', code: 'MAM' },
+                { id: 2, name: 'BT - 荣越หรงเยว่', code: 'BT' },
+                { id: 3, name: 'เจ้ชิง', code: 'JC' },
+                { id: 4, name: 'CP FRESH', code: 'CPF' }
+            ],
+            warehouses: [
+                { id: 1, name: 'Thai KK Industry Co., Ltd.', tel: '02-338-4541', province: 'สมุทปราการ' },
+                { id: 2, name: 'ตลาดไท', tel: '085-616-8888', province: 'ปทุมธานี' },
+                { id: 3, name: 'T.P.S. (เขาบายศรี) (บ่อเต็น)', tel: '089-xxx-xxxx', province: 'จันทบุรี' }
+            ],
+            containers: ['TBCU2122923', 'TBCU2055023', 'CJCU2002715', 'CICU4709644']
+        };
+        
+        // Job Database
+        let jobs = [
+            {
+                rn: 'RN20260509-502',
+                cb: '2026-05-0180',
+                crossingMethod: 'งานนำเข้าหนองคาย',
+                container: 'TBCU2122923',
+                size: '40HC-MAMMOTH',
+                customer: 'MAMMOTH',
+                warehouse: 'Thai KK Industry Co., Ltd. (02-338-4541)',
+                province: 'สมุทปราการ',
+                goods: '胶带 TAPE',
+                qty: 'ไม่ระบุ',
+                seal: '',
+                destination: 'หนองคาย',
+                status: 'transit',
+                createdAt: '2026-05-09 15:06',
+                timeline: [
+                    { time: '2026-05-09 15:06', title: 'สร้างงาน', desc: 'สร้าง RN Number', completed: true },
+                    { time: '2026-05-09 17:25', title: 'ออกจากล้ง', desc: 'รถออกจากล้งแล้ว', completed: true },
+                    { time: '', title: 'ถึงด่าน', desc: 'รอข้ามด่าน', completed: false },
+                ]
+            },
+            {
+                rn: 'RN20260509-501',
+                cb: '2026-05-0181',
+                crossingMethod: 'งานนำเข้าหนองคาย',
+                container: 'TBCU2055023',
+                size: '40HC-MAMMOTH',
+                customer: 'MAMMOTH',
+                warehouse: 'โปรแพค มาสเตอร์ เทปส์',
+                province: 'นครปฐม',
+                goods: '胶带 TAPE',
+                qty: 'ไม่ระบุ',
+                seal: '',
+                destination: 'หนองคาย',
+                status: 'transit',
+                createdAt: '2026-05-09 15:06',
+                timeline: []
+            },
+            {
+                rn: 'RN20260505-07',
+                cb: '2026-05-0172',
+                crossingMethod: 'ตู้รถไฟ NK',
+                container: 'CJCU2002715',
+                size: '45HR-HEBEI LAND',
+                customer: 'MAMMOTH',
+                warehouse: 'บริษัทไท ชิงเต่า จำกัด',
+                province: 'จันทบุรี',
+                goods: '榴莲 (Durian)',
+                qty: '972 Bxs',
+                seal: '2-15368',
+                destination: 'หนองคาย',
+                status: 'waiting',
+                createdAt: '2026-05-05 12:00',
+                timeline: []
+            }
+        ];
+        
+        let currentUser = null;
+        
+        // Quick Login
+        function quickLogin(username, password) {
+            document.getElementById('username').value = username;
+            document.getElementById('password').value = password;
+            document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+        }
+        
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            const users = {
+                'admin': { password: 'admin123', name: 'ผู้ดูแลระบบ', role: 'Administrator' },
+                'cs': { password: 'cs123', name: 'ทีม CS', role: 'Customer Service' },
+                'driver': { password: 'driver123', name: 'คนขับรถ', role: 'Driver' },
+                'doc': { password: 'doc123', name: 'เจ้าหน้าที่เอกสาร', role: 'Documentation' }
+            };
+            
+            if (users[username] && users[username].password === password) {
+                currentUser = { username, ...users[username] };
+                login();
+            } else {
+                alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+            }
+        });
+        
+        function login() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+            document.getElementById('userDisplayName').textContent = currentUser.name;
+            document.getElementById('userRole').textContent = currentUser.role;
+            loadJobs();
+        }
+        
+        function logout() {
+            if (confirm('ต้องการออกจากระบบ?')) {
+                currentUser = null;
+                document.getElementById('dashboard').classList.remove('active');
+                document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('loginForm').reset();
+            }
+        }
+        
+        // Show Page
+        function showPage(page) {
+            document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+            
+            const pageMap = {
+                'dashboard': 'dashboardPage',
+                'quickCreate': 'quickCreatePage',
+                'jobs': 'jobsPage'
+            };
+            
+            document.getElementById(pageMap[page] || 'dashboardPage').classList.add('active');
+            event.target.closest('.menu-item').classList.add('active');
+        }
+        
+        // Load Jobs
+        function loadJobs() {
+            const container = document.getElementById('jobListContainer');
+            container.innerHTML = jobs.map(job => `
+                <div class="job-item" onclick="showJobDetail('${job.rn}')">
+                    <div class="job-item-header">
+                        <span class="job-rn">${job.rn}</span>
+                        <span class="status status-${job.status}">
+                            <span class="status-dot"></span>
+                            ${getStatusText(job.status)}
+                        </span>
+                    </div>
+                    <div class="job-details">
+                        <div class="detail-item">
+                            <span class="detail-label">📦 ตู้:</span>
+                            <span class="detail-value">${job.container}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">👤 ลูกค้า:</span>
+                            <span class="detail-value">${job.customer}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">🏭 สินค้า:</span>
+                            <span class="detail-value">${job.goods}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">📍 ปลายทาง:</span>
+                            <span class="detail-value">${job.destination}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function getStatusText(status) {
+            const statusMap = {
+                'pending': 'รอดำเนินการ',
+                'loading': 'กำลังบรรทุก',
+                'transit': 'กำลังขนส่ง',
+                'waiting': 'รอข้ามด่าน',
+                'delivered': 'ส่งมอบแล้ว'
+            };
+            return statusMap[status] || status;
+        }
+        
+        // Filter Jobs
+        function filterJobs() {
+            const search = document.getElementById('searchJobs').value.toLowerCase();
+            const items = document.querySelectorAll('.job-item');
+            
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(search) ? 'block' : 'none';
+            });
+        }
+        
+        // Autocomplete
+        function showCustomerSuggestions(value) {
+            const list = document.getElementById('customerSuggestions');
+            if (!value) {
+                list.classList.remove('active');
+                return;
+            }
+            
+            const filtered = masterData.customers.filter(c => 
+                c.name.toLowerCase().includes(value.toLowerCase())
+            );
+            
+            if (filtered.length > 0) {
+                list.innerHTML = filtered.map(c => `
+                    <div class="autocomplete-item" onclick="selectCustomer('${c.name}')">
+                        <strong>${c.name}</strong>
+                        <small>Code: ${c.code}</small>
+                    </div>
+                `).join('');
+                list.classList.add('active');
+            } else {
+                list.classList.remove('active');
+            }
+        }
+        
+        function selectCustomer(name) {
+            document.getElementById('customer').value = name;
+            document.getElementById('customerSuggestions').classList.remove('active');
+        }
+        
+        function showWarehouseSuggestions(value) {
+            const list = document.getElementById('warehouseSuggestions');
+            if (!value) {
+                list.classList.remove('active');
+                return;
+            }
+            
+            const filtered = masterData.warehouses.filter(w => 
+                w.name.toLowerCase().includes(value.toLowerCase())
+            );
+            
+            if (filtered.length > 0) {
+                list.innerHTML = filtered.map(w => `
+                    <div class="autocomplete-item" onclick="selectWarehouse('${w.name}', '${w.province}')">
+                        <strong>${w.name}</strong>
+                        <small>${w.province} • ${w.tel}</small>
+                    </div>
+                `).join('');
+                list.classList.add('active');
+            } else {
+                list.classList.remove('active');
+            }
+        }
+        
+        function selectWarehouse(name, province) {
+            document.getElementById('warehouse').value = name;
+            document.getElementById('province').value = province;
+            document.getElementById('warehouseSuggestions').classList.remove('active');
+        }
+        
+        function showContainerSuggestions(value) {
+            const list = document.getElementById('containerSuggestions');
+            if (!value || value.length < 3) {
+                list.classList.remove('active');
+                return;
+            }
+            
+            const filtered = masterData.containers.filter(c => 
+                c.toLowerCase().includes(value.toLowerCase())
+            );
+            
+            if (filtered.length > 0) {
+                list.innerHTML = filtered.map(c => `
+                    <div class="autocomplete-item" onclick="selectContainer('${c}')">
+                        <strong>${c}</strong>
+                    </div>
+                `).join('');
+                list.classList.add('active');
+            } else {
+                list.classList.remove('active');
+            }
+        }
+        
+        function selectContainer(num) {
+            document.getElementById('containerNumber').value = num;
+            document.getElementById('containerSuggestions').classList.remove('active');
+        }
+        
+        // Modals
+        function openQuickJob(template) {
+            openModal('quickJobModal');
+            // Auto-generate RN
+            const today = new Date();
+            const rnDate = today.toISOString().split('T')[0].replace(/-/g, '');
+            const rnSeq = String(jobs.length + 1).padStart(3, '0');
+            document.getElementById('rnNumber').value = `RN${rnDate.slice(0, 8)}-${rnSeq}`;
+            
+            // Apply template
+            if (template === 'export-durian') {
+                document.getElementById('goods').value = '榴莲 (Durian)';
+                document.getElementById('crossingMethod').value = 'ตู้รถไฟ NK';
+                document.getElementById('destination').value = 'YOUYIGUAN, CHINA';
+            }
+        }
+        
+        function openAssignTruck() {
+            alert('🚚 ฟีเจอร์จัดรถ - Coming Soon!');
+        }
+        
+        function openUpdateStatus() {
+            alert('📍 ฟีเจอร์อัพเดทสถานะ - Coming Soon!');
+        }
+        
+        function openCreateDoc() {
+            alert('📄 ฟีเจอร์สร้างเอกสาร - Coming Soon!');
+        }
+        
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+        }
+        
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+        
+        function saveQuickJob() {
+            const newJob = {
+                rn: document.getElementById('rnNumber').value,
+                cb: document.getElementById('cbNumber').value,
+                crossingMethod: document.getElementById('crossingMethod').value,
+                container: document.getElementById('containerNumber').value,
+                size: document.getElementById('containerSize').value,
+                customer: document.getElementById('customer').value,
+                warehouse: document.getElementById('warehouse').value,
+                province: document.getElementById('province').value,
+                goods: document.getElementById('goods').value,
+                qty: document.getElementById('goodsQty').value,
+                seal: document.getElementById('sealNo').value,
+                destination: document.getElementById('destination').value,
+                status: 'pending',
+                createdAt: new Date().toISOString().slice(0, 16).replace('T', ' '),
+                timeline: []
+            };
+            
+            jobs.unshift(newJob);
+            loadJobs();
+            closeModal('quickJobModal');
+            alert('✅ สร้างงานสำเร็จ! RN: ' + newJob.rn);
+        }
+        
+        function showJobDetail(rn) {
+            const job = jobs.find(j => j.rn === rn);
+            if (!job) return;
+            
+            document.getElementById('detailRN').textContent = job.rn;
+            
+            document.getElementById('jobDetailContent').innerHTML = `
+                <div style="display: grid; gap: 0.75rem; font-size: 0.95rem;">
+                    <div><strong>CB Number:</strong> ${job.cb}</div>
+                    <div><strong>เบอร์ตู้:</strong> ${job.container} (${job.size})</div>
+                    <div><strong>ลูกค้า:</strong> ${job.customer}</div>
+                    <div><strong>ล้ง:</strong> ${job.warehouse}</div>
+                    <div><strong>จังหวัด:</strong> ${job.province}</div>
+                    <div><strong>สินค้า:</strong> ${job.goods}</div>
+                    <div><strong>จำนวน:</strong> ${job.qty}</div>
+                    <div><strong>ปลายทาง:</strong> ${job.destination}</div>
+                    ${job.seal ? `<div><strong>SEAL:</strong> ${job.seal}</div>` : ''}
+                </div>
+            `;
+            
+            const timelineHTML = job.timeline.length > 0 ? job.timeline.map(t => `
+                <div class="timeline-item ${t.completed ? 'completed' : ''}">
+                    <div class="timeline-content">
+                        <div class="timeline-time">${t.time || 'รอดำเนินการ'}</div>
+                        <div class="timeline-title">${t.title}</div>
+                        <div class="timeline-desc">${t.desc}</div>
+                    </div>
+                </div>
+            `).join('') : '<p style="color: var(--gray);">ยังไม่มี Timeline</p>';
+            
+            document.getElementById('jobTimeline').innerHTML = timelineHTML;
+            
+            openModal('jobDetailModal');
+        }
+        
+        // Close modal on outside click
+        window.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+            }
+        });
+        
+        // Auto-close autocomplete on outside click
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.autocomplete-wrapper')) {
+                document.querySelectorAll('.autocomplete-list').forEach(list => {
+                    list.classList.remove('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
