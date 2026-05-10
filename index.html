@@ -808,7 +808,9 @@
             <h3>⚡ Quick Login (Demo)</h3>
             <div class="quick-btns">
                 <button class="quick-btn" onclick="quickLogin('admin', 'admin123')">👑 Admin</button>
+                <button class="quick-btn" onclick="quickLogin('manager', 'mgr123')">👔 Manager</button>
                 <button class="quick-btn" onclick="quickLogin('cs', 'cs123')">📞 CS Team</button>
+                <button class="quick-btn" onclick="quickLogin('tech', 'tech123')">🔧 ช่าง</button>
                 <button class="quick-btn" onclick="quickLogin('driver', 'driver123')">🚚 คนขับ</button>
                 <button class="quick-btn" onclick="quickLogin('doc', 'doc123')">📄 เอกสาร</button>
             </div>
@@ -897,7 +899,7 @@
                                     <span class="action-icon">📄</span>
                                     สร้างเอกสาร
                                 </div>
-                                <div class="action-btn" onclick="window.open('container-hub.html','_blank')">
+                                <div class="action-btn" onclick="window.location.href='container-hub.html'">
                                     <span class="action-icon">📦</span>
                                     จัดการตู้ Container
                                 </div>
@@ -1744,10 +1746,12 @@
             const password = document.getElementById('password').value;
             
             const users = {
-                'admin': { password: 'admin123', name: 'ผู้ดูแลระบบ', role: 'Administrator' },
-                'cs': { password: 'cs123', name: 'ทีม CS', role: 'Customer Service' },
-                'driver': { password: 'driver123', name: 'คนขับรถ', role: 'Driver' },
-                'doc': { password: 'doc123', name: 'เจ้าหน้าที่เอกสาร', role: 'Documentation' }
+                'admin':  { password: 'admin123',  name: 'ผู้ดูแลระบบ',       role: 'Administrator' },
+                'manager':{ password: 'mgr123',    name: 'ผู้จัดการ สมชาย',   role: 'Manager' },
+                'cs':     { password: 'cs123',     name: 'ทีม CS',            role: 'Customer Service' },
+                'tech':   { password: 'tech123',   name: 'นายวิชัย (ช่าง)',   role: 'Technician' },
+                'driver': { password: 'driver123', name: 'คนขับรถ',           role: 'Driver' },
+                'doc':    { password: 'doc123',    name: 'เจ้าหน้าที่เอกสาร', role: 'Documentation' }
             };
             
             if (users[username] && users[username].password === password) {
@@ -1759,6 +1763,7 @@
         });
         
         function login() {
+            localStorage.setItem('cnx_user', JSON.stringify(currentUser));
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('dashboard').classList.add('active');
             document.getElementById('userDisplayName').textContent = currentUser.name;
@@ -1769,6 +1774,7 @@
         function logout() {
             if (confirm('ต้องการออกจากระบบ?')) {
                 currentUser = null;
+                localStorage.removeItem('cnx_user');
                 document.getElementById('dashboard').classList.remove('active');
                 document.getElementById('loginScreen').style.display = 'flex';
                 document.getElementById('loginForm').reset();

@@ -45,9 +45,19 @@
   </div>
 </nav>
 
+<!-- User Bar -->
+<div id="user-bar" class="bg-blue-900 text-white px-6 py-2 flex items-center justify-between text-sm hidden">
+  <div class="flex items-center gap-3">
+    <span id="ub-avatar" class="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-xs font-bold">A</span>
+    <span><span id="ub-name" class="font-semibold"></span> — <span id="ub-role" class="text-blue-300"></span></span>
+    <span id="ub-badge" class="text-xs px-2 py-0.5 rounded-full bg-blue-700"></span>
+  </div>
+  <button onclick="doLogout()" class="text-xs bg-blue-800 hover:bg-red-700 px-3 py-1 rounded-lg transition"><i class="fas fa-sign-out-alt mr-1"></i>ออกจากระบบ</button>
+</div>
+
 <!-- Tab Navigation -->
 <div class="bg-white border-b border-slate-200 px-6 sticky top-12 z-30 shadow-sm">
-  <div class="flex gap-1 overflow-x-auto py-2">
+  <div class="flex gap-1 overflow-x-auto py-2" id="tab-bar">
     <button onclick="showTab('dashboard')" class="tab-btn active px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap" id="tab-dashboard"><i class="fas fa-chart-pie mr-2"></i>Dashboard</button>
     <button onclick="showTab('idcard')" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap text-slate-600 hover:bg-slate-100" id="tab-idcard"><i class="fas fa-id-card mr-2"></i>Container ID Card</button>
     <button onclick="showTab('repair')" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap text-slate-600 hover:bg-slate-100" id="tab-repair"><i class="fas fa-tools mr-2"></i>ระบบแจ้งซ่อม</button>
@@ -55,6 +65,40 @@
     <button onclick="showTab('parts')" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap text-slate-600 hover:bg-slate-100" id="tab-parts"><i class="fas fa-boxes mr-2"></i>สต๊อคอะไหล่</button>
     <button onclick="showTab('eir')" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap text-slate-600 hover:bg-slate-100" id="tab-eir"><i class="fas fa-exchange-alt mr-2"></i>EIR เข้า-ออกลาน</button>
     <button onclick="showTab('pm')" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap text-slate-600 hover:bg-slate-100" id="tab-pm"><i class="fas fa-calendar-check mr-2"></i>PM บำรุงตามแผน</button>
+  </div>
+</div>
+
+<!-- Login Overlay (ถ้าไม่มี session) -->
+<div id="login-overlay" class="fixed inset-0 bg-slate-900/90 z-50 flex items-center justify-center hidden">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm mx-4 overflow-hidden">
+    <div class="bg-gradient-to-r from-blue-800 to-blue-900 p-6 text-center text-white">
+      <i class="fas fa-cube text-4xl mb-2 text-blue-300"></i>
+      <h2 class="text-xl font-bold kanit">Container Hub</h2>
+      <p class="text-blue-300 text-sm mt-1">กรุณาเข้าสู่ระบบก่อนใช้งาน</p>
+    </div>
+    <div class="p-6 space-y-4">
+      <div>
+        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">ชื่อผู้ใช้</label>
+        <input type="text" id="ov-user" placeholder="admin / manager / cs / tech / driver" class="w-full border-2 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">รหัสผ่าน</label>
+        <input type="password" id="ov-pass" placeholder="รหัสผ่าน" class="w-full border-2 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" onkeydown="if(event.key==='Enter')overlayLogin()">
+      </div>
+      <button onclick="overlayLogin()" class="w-full bg-blue-700 text-white py-2.5 rounded-lg font-bold hover:bg-blue-800 transition"><i class="fas fa-sign-in-alt mr-2"></i>เข้าสู่ระบบ</button>
+      <p id="ov-err" class="text-xs text-red-500 text-center hidden">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</p>
+      <div class="border-t pt-3">
+        <p class="text-xs text-slate-400 text-center mb-2">Quick Login (Demo)</p>
+        <div class="grid grid-cols-3 gap-1.5">
+          <button onclick="quickOverlayLogin('admin','admin123')" class="text-xs bg-purple-100 text-purple-700 py-1.5 rounded hover:bg-purple-200 font-semibold">👑 Admin</button>
+          <button onclick="quickOverlayLogin('manager','mgr123')" class="text-xs bg-blue-100 text-blue-700 py-1.5 rounded hover:bg-blue-200 font-semibold">👔 Manager</button>
+          <button onclick="quickOverlayLogin('cs','cs123')" class="text-xs bg-green-100 text-green-700 py-1.5 rounded hover:bg-green-200 font-semibold">📞 CS</button>
+          <button onclick="quickOverlayLogin('tech','tech123')" class="text-xs bg-yellow-100 text-yellow-700 py-1.5 rounded hover:bg-yellow-200 font-semibold">🔧 ช่าง</button>
+          <button onclick="quickOverlayLogin('driver','driver123')" class="text-xs bg-orange-100 text-orange-700 py-1.5 rounded hover:bg-orange-200 font-semibold">🚚 คนขับ</button>
+          <button onclick="quickOverlayLogin('doc','doc123')" class="text-xs bg-slate-100 text-slate-600 py-1.5 rounded hover:bg-slate-200 font-semibold">📄 เอกสาร</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1821,8 +1865,122 @@
 </div>
 
 <script>
-// Tab Management
+// ===== ROLE PERMISSIONS =====
+const USERS = {
+  'admin':   { password:'admin123',  name:'ผู้ดูแลระบบ',       role:'Administrator' },
+  'manager': { password:'mgr123',    name:'ผู้จัดการ สมชาย',   role:'Manager' },
+  'cs':      { password:'cs123',     name:'ทีม CS',            role:'Customer Service' },
+  'tech':    { password:'tech123',   name:'นายวิชัย (ช่าง)',   role:'Technician' },
+  'driver':  { password:'driver123', name:'คนขับรถ',           role:'Driver' },
+  'doc':     { password:'doc123',    name:'เจ้าหน้าที่เอกสาร', role:'Documentation' }
+};
+
+const ROLE_CONFIG = {
+  'Administrator':    { tabs:['dashboard','idcard','repair','technician','parts','eir','pm'], badge:'👑 เข้าได้ทุกระบบ',    color:'bg-purple-600' },
+  'Manager':          { tabs:['dashboard','idcard','repair','technician','parts','eir','pm'], badge:'👔 ผู้จัดการ',          color:'bg-blue-600' },
+  'Customer Service': { tabs:['dashboard','idcard','repair','eir'],                           badge:'📞 CS — ดูได้ 4 หน้า', color:'bg-green-600' },
+  'Technician':       { tabs:['technician','parts'],                                          badge:'🔧 ช่าง — งานช่าง+อะไหล่', color:'bg-yellow-600' },
+  'Driver':           { tabs:['repair'],                                                      badge:'🚚 คนขับ — แจ้งซ่อมเท่านั้น', color:'bg-orange-600' },
+  'Documentation':    { tabs:['dashboard','idcard'],                                          badge:'📄 เอกสาร — Dashboard+ID Card', color:'bg-slate-600' }
+};
+
+let currentUser = null;
+
+// ===== INIT ON LOAD =====
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('cnx_user');
+  if (saved) {
+    try {
+      currentUser = JSON.parse(saved);
+      applyRole();
+    } catch(e) { showLoginOverlay(); }
+  } else {
+    showLoginOverlay();
+  }
+});
+
+function applyRole() {
+  if (!currentUser) return;
+  const cfg = ROLE_CONFIG[currentUser.role] || ROLE_CONFIG['Documentation'];
+  const allTabs = ['dashboard','idcard','repair','technician','parts','eir','pm'];
+
+  // Show/hide tabs
+  allTabs.forEach(t => {
+    const btn = document.getElementById('tab-' + t);
+    if (cfg.tabs.includes(t)) {
+      btn.classList.remove('hidden');
+    } else {
+      btn.classList.add('hidden');
+      // Lock the page content
+      const page = document.getElementById('page-' + t);
+      if (page) page.classList.add('hidden');
+    }
+  });
+
+  // Go to first allowed tab
+  const firstAllowed = allTabs.find(t => cfg.tabs.includes(t)) || 'dashboard';
+  showTab(firstAllowed);
+
+  // User bar
+  document.getElementById('user-bar').classList.remove('hidden');
+  document.getElementById('ub-name').textContent = currentUser.name;
+  document.getElementById('ub-role').textContent = currentUser.role;
+  document.getElementById('ub-avatar').textContent = currentUser.name.charAt(0).toUpperCase();
+  const badge = document.getElementById('ub-badge');
+  badge.textContent = cfg.badge;
+  badge.className = 'text-xs px-2 py-0.5 rounded-full text-white ' + cfg.color;
+
+  // Hide login overlay
+  document.getElementById('login-overlay').classList.add('hidden');
+}
+
+function showLoginOverlay() {
+  document.getElementById('login-overlay').classList.remove('hidden');
+}
+
+function overlayLogin() {
+  const u = document.getElementById('ov-user').value.trim().toLowerCase();
+  const p = document.getElementById('ov-pass').value;
+  const err = document.getElementById('ov-err');
+  if (USERS[u] && USERS[u].password === p) {
+    currentUser = { username: u, ...USERS[u] };
+    localStorage.setItem('cnx_user', JSON.stringify(currentUser));
+    err.classList.add('hidden');
+    applyRole();
+  } else {
+    err.classList.remove('hidden');
+  }
+}
+
+function quickOverlayLogin(u, p) {
+  document.getElementById('ov-user').value = u;
+  document.getElementById('ov-pass').value = p;
+  overlayLogin();
+}
+
+function doLogout() {
+  if (confirm('ออกจากระบบ?')) {
+    localStorage.removeItem('cnx_user');
+    currentUser = null;
+    document.getElementById('user-bar').classList.add('hidden');
+    // Show all tabs again before login overlay
+    ['dashboard','idcard','repair','technician','parts','eir','pm'].forEach(t => {
+      document.getElementById('tab-' + t).classList.remove('hidden');
+    });
+    showLoginOverlay();
+  }
+}
+
+// Tab blocked guard
 function showTab(name) {
+  if (currentUser) {
+    const cfg = ROLE_CONFIG[currentUser.role];
+    if (cfg && !cfg.tabs.includes(name)) {
+      toast('ไม่มีสิทธิ์เข้าถึงหน้านี้ — Role: ' + currentUser.role, 'lock', 'text-red-400');
+      return;
+    }
+  }
+
   ['dashboard','idcard','repair','technician','parts','eir','pm'].forEach(t => {
     document.getElementById('page-' + t).classList.add('hidden');
     const btn = document.getElementById('tab-' + t);
