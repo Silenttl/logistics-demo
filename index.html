@@ -23,190 +23,9 @@
             --dark: #1e293b;
             --gray: #64748b;
             --light-gray: #f1f5f9;
-            --border: #e2e8f0;
-        }
-        
-        body {
-            font-family: 'Sarabun', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        
-        /* Login Screen */
-        .login-box {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            width: 100%;
-            max-width: 420px;
-            animation: slideIn 0.5s ease-out;
-        }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .login-header h1 {
-            font-family: 'Kanit', sans-serif;
-            font-size: 1.75rem;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-        }
-        
-        .login-header p {
-            color: var(--gray);
-        }
-        
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
-        
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--dark);
-        }
-        
-        .form-group input, select {
-            width: 100%;
-            padding: 0.875rem;
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            font-size: 1rem;
-            font-family: 'Sarabun', sans-serif;
-            transition: all 0.2s;
-        }
-        
-        .form-group input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-        }
-        
-        .btn {
-            padding: 0.875rem 1.5rem;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Sarabun', sans-serif;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-        
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-            width: 100%;
-        }
-        
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
-        }
-        
-        .quick-login {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border);
-        }
-        
-        .quick-login h3 {
-            font-size: 0.9rem;
-            color: var(--gray);
-            margin-bottom: 0.75rem;
-            text-align: center;
-        }
-        
-        .quick-btns {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
-        }
-        
-        .quick-btn {
-            padding: 0.625rem;
-            border: 2px solid var(--border);
-            background: white;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-        
-        .quick-btn:hover {
-            border-color: var(--primary);
-            background: #eff6ff;
-        }
-        
-        /* Dashboard */
-        .dashboard {
-            display: none;
-            background: white;
-            width: 100%;
-            max-width: 1600px;
-            margin: 0 auto;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            height: 95vh;
-        }
-        
-        .dashboard.active {
-            display: flex;
-        }
-        
-        /* Header */
-        .dashboard-header {
-            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
-            color: white;
-            padding: 1.25rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .header-left h1 {
-            font-family: 'Kanit', sans-serif;
-            font-size: 1.5rem;
-        }
-        
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .user-info-header {
-            text-align: right;
-        }
-        
-        .user-info-header strong {
+            <script>
+                // Master Data
+                const masterData = {
             display: block;
             font-size: 1rem;
         }
@@ -861,7 +680,7 @@
                             <span class="menu-icon">📍</span>
                             <span>ติดตามตู้</span>
                         </div>
-                        <div class="menu-item" onclick="showPage('documents')">
+                        <div class="menu-item" onclick="openDocsModal(); showPage('documents')">
                             <span class="menu-icon">📄</span>
                             <span>เอกสาร</span>
                         </div>
@@ -1549,6 +1368,30 @@
         </div>
     </div>
 
+    <!-- Government Documents Modal -->
+    <div id="gov-docs-modal" class="modal hidden fixed inset-0 z-50 flex items-center justify-center">
+        <div class="modal-backdrop absolute inset-0 bg-black opacity-50"></div>
+        <div class="bg-white rounded-lg shadow-lg max-w-3xl w-full z-10 p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">เอกสารที่ใช้ยื่นราชการ</h3>
+                <button onclick="closeModal('gov-docs-modal')" class="text-gray-600">ปิด</button>
+            </div>
+            <div id="gov-docs-list" class="mb-4" style="max-height:300px; overflow:auto;"></div>
+            <div class="mb-4 border-t pt-4">
+                <h4 class="font-medium mb-2">เพิ่มเอกสารใหม่</h4>
+                <div class="grid grid-cols-2 gap-2">
+                    <input id="new-doc-id" placeholder="รหัสเอกสาร (DOC-XXX)" class="border p-2" />
+                    <input id="new-doc-name" placeholder="ชื่อเอกสาร" class="border p-2" />
+                    <input id="new-doc-purpose" placeholder="วัตถุประสงค์" class="border p-2 col-span-2" />
+                    <label class="col-span-2"><input id="new-doc-required" type="checkbox" /> จำเป็นหรือไม่</label>
+                </div>
+                <div class="mt-2">
+                    <button class="btn" onclick="addGovDoc()">เพิ่ม</button>
+                    <button class="btn ml-2" onclick="exportGovDocsAsMarkdown()">Export as Markdown</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Job Detail Modal -->
     <div id="jobDetailModal" class="modal">
         <div class="modal-content">
@@ -1574,6 +1417,96 @@
     <script>
         // Master Data
         const masterData = {
+        // --- Government Documents helpers ---
+        function renderGovDocs() {
+            const container = document.getElementById('gov-docs-list');
+            if (!container) return;
+            container.innerHTML = '';
+            const docs = masterData.documents || [];
+            docs.forEach(d => {
+                const div = document.createElement('div');
+                div.className = 'p-2 border-b flex justify-between items-center';
+                div.innerHTML = `
+                    <div>
+                        <div class="font-medium">${d.name}</div>
+                        <div class="text-sm text-gray-600">${d.purpose} ${d.required ? '<span class="text-red-500">(จำเป็น)</span>' : ''}</div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button class="btn btn-sm" onclick="downloadDoc('${d.id}')">ดาวน์โหลด</button>
+                        <button class="btn btn-sm" onclick="removeDoc('${d.id}')">ลบ</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function openDocsModal() {
+            // render then open modal
+            renderGovDocs();
+            openModal('gov-docs-modal');
+        }
+
+        function addGovDoc() {
+            const id = document.getElementById('new-doc-id').value.trim();
+            const name = document.getElementById('new-doc-name').value.trim();
+            const purpose = document.getElementById('new-doc-purpose').value.trim();
+            const required = document.getElementById('new-doc-required').checked;
+            if (!id || !name) { alert('กรุณากรอกรหัสและชื่อเอกสาร'); return; }
+            masterData.documents.push({ id, name, purpose, required, status: 'available' });
+            document.getElementById('new-doc-id').value = '';
+            document.getElementById('new-doc-name').value = '';
+            document.getElementById('new-doc-purpose').value = '';
+            document.getElementById('new-doc-required').checked = false;
+            renderGovDocs();
+        }
+
+        function removeDoc(id) {
+            const idx = masterData.documents.findIndex(d => d.id === id);
+            if (idx >= 0) {
+                if (!confirm('ลบเอกสารนี้จริงหรือไม่?')) return;
+                masterData.documents.splice(idx, 1);
+                renderGovDocs();
+            }
+        }
+
+        function downloadDoc(id) {
+            // For demo: generate a small placeholder PDF-like file as text (could be replaced with real files)
+            const doc = masterData.documents.find(d => d.id === id);
+            if (!doc) { alert('ไม่พบเอกสาร'); return; }
+            const content = `เอกสาร: ${doc.name}\nวัตถุประสงค์: ${doc.purpose}\nหมายเหตุ: นี่เป็นตัวอย่างเอกสาร (placeholder)`;
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${doc.id}-${doc.name}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        }
+
+        function exportGovDocsAsMarkdown() {
+            const docs = masterData.documents || [];
+            let md = `# รายการเอกสารที่ใช้ยื่นราชการ\n\n`;
+            md += `วันที่สร้าง: ${new Date().toLocaleString()}\n\n`;
+            docs.forEach(d => {
+                md += `- **${d.id}** - ${d.name} ${d.required ? '_(จำเป็น)_' : ''}\n  - วัตถุประสงค์: ${d.purpose}\n`;
+            });
+            const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `government-docs-checklist-${new Date().toISOString().slice(0,10)}.md`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        }
+
+        // Hook render on page init / login
+        document.addEventListener('DOMContentLoaded', () => {
+            try { renderGovDocs(); } catch (e) { /* ignore */ }
+        });
             customers: [
                 { id: 1, name: 'MAMMOTH', code: 'MAM' },
                 { id: 2, name: 'BT - 荣越หรงเยว่', code: 'BT' },
@@ -1586,7 +1519,110 @@
                 { id: 3, name: 'T.P.S. (เขาบายศรี) (บ่อเต็น)', tel: '089-xxx-xxxx', province: 'จันทบุรี' }
             ],
             containers: ['TBCU2122923', 'TBCU2055023', 'CJCU2002715', 'CICU4709644']
+            ,
+            // Documents used across the app (can be extended)
+            documents: [
+                { id: 'DOC-001', name: 'ทะเบียนบริษัท (Business Registration)', purpose: 'ยื่นราชการ / อ้างอิงสถานะบริษัท', required: true, status: 'available' },
+                { id: 'DOC-002', name: 'หนังสือมอบอำนาจ (Power of Attorney)', purpose: 'ยื่นศุลกากร / ตัวแทน', required: true, status: 'available' },
+                { id: 'DOC-003', name: 'ใบอนุญาตส่งออก-นำเข้า (Permit)', purpose: 'ยื่นหน่วยงานที่เกี่ยวข้อง', required: true, status: 'available' },
+                { id: 'DOC-004', name: 'Packing List', purpose: 'เอกสารประกอบการตรวจสินค้า', required: true, status: 'available' },
+                { id: 'DOC-005', name: 'Invoice (Commercial Invoice)', purpose: 'ยื่นศุลกากร / คำนวณภาษี', required: true, status: 'available' },
+                { id: 'DOC-006', name: 'Bill of Lading / AWB', purpose: 'เอกสารขนส่งหลัก', required: true, status: 'available' },
+                { id: 'DOC-007', name: 'Certificate of Origin', purpose: 'ยื่นพิธีการส่งออก/สิทธิพิเศษ', required: false, status: 'available' },
+                { id: 'DOC-008', name: 'Fit for Export / Phytosanitary', purpose: 'สินค้าการเกษตร - ยื่นกรม', required: false, status: 'available' }
+            ]
         };
+
+        // --- Government Documents helpers (moved outside masterData) ---
+        function renderGovDocs() {
+            const container = document.getElementById('gov-docs-list');
+            if (!container) return;
+            container.innerHTML = '';
+            const docs = masterData.documents || [];
+            docs.forEach(d => {
+                const div = document.createElement('div');
+                div.className = 'p-2 border-b flex justify-between items-center';
+                div.innerHTML = `
+                    <div>
+                        <div class="font-medium">${d.name}</div>
+                        <div class="text-sm text-gray-600">${d.purpose} ${d.required ? '<span class="text-red-500">(จำเป็น)</span>' : ''}</div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button class="btn btn-sm" onclick="downloadDoc('${d.id}')">ดาวน์โหลด</button>
+                        <button class="btn btn-sm" onclick="removeDoc('${d.id}')">ลบ</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function openDocsModal() {
+            // render then open modal
+            renderGovDocs();
+            openModal('gov-docs-modal');
+        }
+
+        function addGovDoc() {
+            const id = document.getElementById('new-doc-id').value.trim();
+            const name = document.getElementById('new-doc-name').value.trim();
+            const purpose = document.getElementById('new-doc-purpose').value.trim();
+            const required = document.getElementById('new-doc-required').checked;
+            if (!id || !name) { alert('กรุณากรอกรหัสและชื่อเอกสาร'); return; }
+            masterData.documents.push({ id, name, purpose, required, status: 'available' });
+            document.getElementById('new-doc-id').value = '';
+            document.getElementById('new-doc-name').value = '';
+            document.getElementById('new-doc-purpose').value = '';
+            document.getElementById('new-doc-required').checked = false;
+            renderGovDocs();
+        }
+
+        function removeDoc(id) {
+            const idx = masterData.documents.findIndex(d => d.id === id);
+            if (idx >= 0) {
+                if (!confirm('ลบเอกสารนี้จริงหรือไม่?')) return;
+                masterData.documents.splice(idx, 1);
+                renderGovDocs();
+            }
+        }
+
+        function downloadDoc(id) {
+            // For demo: generate a small placeholder PDF-like file as text (could be replaced with real files)
+            const doc = masterData.documents.find(d => d.id === id);
+            if (!doc) { alert('ไม่พบเอกสาร'); return; }
+            const content = `เอกสาร: ${doc.name}\nวัตถุประสงค์: ${doc.purpose}\nหมายเหตุ: นี่เป็นตัวอย่างเอกสาร (placeholder)`;
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${doc.id}-${doc.name}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        }
+
+        function exportGovDocsAsMarkdown() {
+            const docs = masterData.documents || [];
+            let md = `# รายการเอกสารที่ใช้ยื่นราชการ\n\n`;
+            md += `วันที่สร้าง: ${new Date().toLocaleString()}\n\n`;
+            docs.forEach(d => {
+                md += `- **${d.id}** - ${d.name} ${d.required ? '_(จำเป็น)_' : ''}\n  - วัตถุประสงค์: ${d.purpose}\n`;
+            });
+            const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `government-docs-checklist-${new Date().toISOString().slice(0,10)}.md`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        }
+
+        // Hook render on page init / login
+        document.addEventListener('DOMContentLoaded', () => {
+            try { renderGovDocs(); } catch (e) { /* ignore */ }
+        });
         
         // Job Database
         let jobs = [
@@ -1895,23 +1931,33 @@
         }
         
         function saveQuickJob() {
-            const newJob = {
-                rn: document.getElementById('rnNumber').value,
-                cb: document.getElementById('cbNumber').value,
-                crossingMethod: document.getElementById('crossingMethod').value,
-                container: document.getElementById('containerNumber').value,
-                size: document.getElementById('containerSize').value,
-                customer: document.getElementById('customer').value,
-                warehouse: document.getElementById('warehouse').value,
-                province: document.getElementById('province').value,
-                goods: document.getElementById('goods').value,
-                qty: document.getElementById('goodsQty').value,
-                seal: document.getElementById('sealNo').value,
-                destination: document.getElementById('destination').value,
-                status: 'pending',
-                createdAt: new Date().toISOString().slice(0, 16).replace('T', ' '),
-                timeline: []
-            };
+                    // Basic client-side validation for required demo fields
+                    const containerVal = document.getElementById('containerNumber').value.trim();
+                    const customerVal = document.getElementById('customer').value.trim();
+                    if (!containerVal || !customerVal) {
+                        alert('กรุณาระบุอย่างน้อย: เบอร์ตู้ (Container) และ ลูกค้า (Customer)');
+                        if (!containerVal) document.getElementById('containerNumber').focus();
+                        else document.getElementById('customer').focus();
+                        return;
+                    }
+
+                    const newJob = {
+                        rn: document.getElementById('rnNumber').value,
+                        cb: document.getElementById('cbNumber').value,
+                        crossingMethod: document.getElementById('crossingMethod').value,
+                        container: containerVal,
+                        size: document.getElementById('containerSize').value,
+                        customer: customerVal,
+                        warehouse: document.getElementById('warehouse').value,
+                        province: document.getElementById('province').value,
+                        goods: document.getElementById('goods').value,
+                        qty: document.getElementById('goodsQty').value,
+                        seal: document.getElementById('sealNo').value,
+                        destination: document.getElementById('destination').value,
+                        status: 'pending',
+                        createdAt: new Date().toISOString().slice(0, 16).replace('T', ' '),
+                        timeline: []
+                    };
             
             jobs.unshift(newJob);
             loadJobs();

@@ -1027,11 +1027,20 @@ function runAI() {
   box.classList.remove('hidden');
   if (match) {
     const d = drivers.find(dr => dr.truck === match.plate);
+    // Provide a clearer, step-by-step reasoning + quick action
     res.innerHTML = `
       <div class="bg-blue-50 rounded-lg p-3 mb-2">
         <div class="font-bold text-blue-800">🏆 แนะนำ: ${match.plate} (${match.type})</div>
         <div class="text-slate-600 text-xs mt-1">คนขับ: ${d ? d.name : '—'} | OTP: ${d ? d.otp+'%' : '—'} | Safety: ${d ? d.safety+'%' : '—'}</div>
-        <div class="text-slate-600 text-xs">เหตุผล: ประเภทตู้ตรงกัน, คนขับ OTP สูง, อยู่ใกล้ต้นทาง</div>
+        <div class="text-slate-600 text-xs mt-2"><strong>เหตุผล:</strong></div>
+        <ul class="text-slate-600 text-xs" style="margin-top:.25rem;margin-left:1rem;line-height:1.4;">
+          <li>• ประเภทตู้ (${ctype}) ตรงกับ ${match.type}</li>
+          <li>• คนขับมี OTP / Safety สูง (${d ? d.otp + '% / ' + d.safety + '%' : 'ข้อมูลไม่ครบ'})</li>
+          <li>• รถสถานะว่าง (idle) และอยู่ใกล้ต้นทางตามข้อมูลตัวอย่าง</li>
+        </ul>
+        <div style="margin-top:.5rem;">
+          <button onclick="selectTruck('${match.plate.replace("'","\\'")}', '${d ? d.name.replace("'","\\'") : ''}')" class="text-xs bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">เลือกคันนี้</button>
+        </div>
       </div>
       ${available.length > 1 ? '<div class="text-xs text-slate-500">รถสำรอง: ' + available.filter(t=>t!==match).map(t=>t.plate).join(', ') + '</div>' : ''}`;
   } else {
