@@ -1529,7 +1529,17 @@
                 { id: 'DOC-005', name: 'Invoice (Commercial Invoice)', purpose: 'ยื่นศุลกากร / คำนวณภาษี', required: true, status: 'available' },
                 { id: 'DOC-006', name: 'Bill of Lading / AWB', purpose: 'เอกสารขนส่งหลัก', required: true, status: 'available' },
                 { id: 'DOC-007', name: 'Certificate of Origin', purpose: 'ยื่นพิธีการส่งออก/สิทธิพิเศษ', required: false, status: 'available' },
-                { id: 'DOC-008', name: 'Fit for Export / Phytosanitary', purpose: 'สินค้าการเกษตร - ยื่นกรม', required: false, status: 'available' }
+                { id: 'DOC-008', name: 'Fit for Export / Phytosanitary', purpose: 'สินค้าการเกษตร - ยื่นกรม', required: false, status: 'available' },
+                // Export / Customs specific documents
+                { id: 'EX-001', name: 'e-Manifest / รายการสินค้าอิเล็กทรอนิกส์', purpose: 'แจ้งรายการสินค้าล่วงหน้าต่อท่าเรือ/ระบบศุลกากร', required: true, status: 'available' },
+                { id: 'EX-002', name: 'Export Declaration (ใบขนส่งออก)', purpose: 'เอกสารหลักสำหรับการอนุญาตส่งออก/ยิงใบขน', required: true, status: 'available' },
+                { id: 'EX-003', name: 'Shipping Instruction (SI)', purpose: 'คำสั่งจัดส่งให้สายเรือ/ผู้ขนส่ง', required: true, status: 'available' },
+                { id: 'EX-004', name: 'Container Packing List / House Packing List', purpose: 'รายละเอียดการบรรจุตู้สำหรับใบขน', required: true, status: 'available' },
+                { id: 'EX-005', name: 'VGM (Verified Gross Mass)', purpose: 'น้ำหนักยืนยันของตู้สำหรับสายเรือ', required: false, status: 'available' },
+                { id: 'EX-006', name: 'Customs Invoice / Commercial Invoice', purpose: 'ใช้สำหรับคำนวณภาษีและมูลค่าสินค้า', required: true, status: 'available' },
+                { id: 'EX-007', name: 'Certificate of Origin (CO)', purpose: 'ขอสิทธิประโยชน์ทางการค้า หรือข้อกำหนดของปลายทาง', required: false, status: 'available' },
+                { id: 'EX-008', name: 'Permits / Licenses (special goods)', purpose: 'เอกสารอนุญาตเฉพาะสินค้า เช่น สัตว์/พืช/วัตถุอันตราย', required: false, status: 'available' },
+                { id: 'EX-009', name: 'Insurance Certificate', purpose: 'หลักฐานประกันสินค้า', required: false, status: 'available' }
             ]
         };
 
