@@ -3,283 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEW DC SPM Document System 2026 - Work Order Form</title>
+    <title>SPM - Professional Work Order System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap');
-        body { font-family: 'Sarabun', sans-serif; }
-        .form-section-card { @apply bg-white p-6 rounded-xl shadow-md border border-gray-100; }
-        .form-label { @apply block text-sm font-semibold text-gray-700 mb-1; }
-        .form-input { @apply block w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-blue-500 focus:border-blue-500; }
-        .form-select { @apply block w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-blue-500 focus:border-blue-500 bg-white; }
-        .item-table-input { @apply block w-full border-0 border-b border-gray-200 p-2 text-sm focus:ring-0 focus:border-blue-500; }
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap');
+        body { font-family: 'Sarabun', sans-serif; background-color: #f3f4f6; }
+        .input-card { @apply bg-white p-5 rounded-xl shadow-sm border border-gray-200; }
+        .label-text { @apply block text-xs font-bold text-gray-500 uppercase mb-1; }
+        .input-field { @apply w-full border-b border-gray-300 focus:border-blue-600 outline-none py-1 text-sm transition-colors; }
     </style>
 </head>
-<body class="bg-gray-50 flex h-screen overflow-hidden">
+<body class="p-4 md:p-8">
 
-    <aside class="w-64 bg-white border-r border-gray-100 flex flex-col p-6 space-y-8">
-        <div class="flex items-center space-x-3">
-            <span class="text-3xl">DC</span>
-            <span class="font-bold text-xl text-blue-900">NEW DC SPM 2026</span>
-        </div>
-        <nav class="flex-1 space-y-4">
-            <a href="#" class="flex items-center space-x-3 text-gray-700 p-3 rounded-lg hover:bg-gray-100"><span class="text-xl">🏠</span> <span>หน้าหลัก</span></a>
-            <a href="#" class="flex items-center space-x-3 text-blue-700 p-3 rounded-lg bg-blue-50 font-semibold"><span class="text-xl">📄</span> <span>ใบงานใหม่</span></a>
-            <a href="#" class="flex items-center space-x-3 text-gray-700 p-3 rounded-lg hover:bg-gray-100"><span class="text-xl">📁</span> <span>เอกสารทั้งหมด</span></a>
-            <a href="#" class="flex items-center space-x-3 text-gray-700 p-3 rounded-lg hover:bg-gray-100"><span class="text-xl">⚙️</span> <span>การตั้งค่า</span></a>
-        </nav>
-    </aside>
-
-    <main class="flex-1 flex flex-col h-full bg-gray-100">
-        <header class="bg-white border-b border-gray-100 p-5 flex items-center justify-between shadow-sm">
-            <h1 class="text-2xl font-bold text-blue-950">กรอกข้อมูลใบงาน (Work Order Data Input)</h1>
-            <div class="flex items-center space-x-4">
-                <span class="text-sm text-gray-500">ยินดีต้อนรับ, User@SPM</span>
-                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center font-bold text-blue-900">US</div>
+    <div class="max-w-5xl mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">สร้างใบงานขนส่งสินค้า</h1>
+                <p class="text-gray-500 text-sm">SPM Document System 2026 - Digital Form</p>
             </div>
-        </header>
-
-        <div class="flex-1 overflow-y-auto p-8">
-            <form id="spmWorkOrderForm" class="space-y-8">
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="form-section-card space-y-5">
-                        <h2 class="text-lg font-bold text-blue-900 flex items-center space-x-2"><span>🏷️</span> ข้อมูลทั่วไปและข้อมูลการส่ง</h2>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="form-label">วันที่ใบงาน (Date)</label>
-                                <input type="date" id="doc_date" class="form-input">
-                            </div>
-                            <div>
-                                <label class="form-label">หมายเลข RN (RN No.)</label>
-                                <input type="text" id="rn_no" class="form-input" placeholder="เช่น RN260513-501">
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="form-label">หมายเลขตู้สินค้า (Container No.)</label>
-                                <input type="text" id="container_no" class="form-input uppercase" maxlength="11" placeholder="เช่น ICLU1234567">
-                            </div>
-                            <div>
-                                <label class="form-label">ขนาด (Size)</label>
-                                <select id="container_size" class="form-select">
-                                    <option>45HR-BT</option>
-                                    <option>45HR-CL</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="form-label">ผู้รับงาน (Carrier)</label>
-                            <input type="text" id="carrier" class="form-input" placeholder="เช่น ICL / SPM">
-                        </div>
-                    </div>
-
-                    <div class="form-section-card space-y-5">
-                        <h2 class="text-lg font-bold text-blue-900 flex items-center space-x-2"><span>🚚</span> ข้อมูลยานพาหนะและผู้รับ</h2>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="form-label">ทะเบียนรถหัว (Truck Head)</label>
-                                <input type="text" id="truck_head" class="form-input">
-                            </div>
-                            <div>
-                                <label class="form-label">ทะเบียนรถหาง (Truck Tail)</label>
-                                <input type="text" id="truck_tail" class="form-input">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="form-label">ชื่อพนักงานขับรถ (Driver Name)</label>
-                            <input type="text" id="driver_name" class="form-input">
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="form-label">ผู้ส่ง (Shipper)</label>
-                                <input type="text" id="shipper" class="form-input">
-                            </div>
-                            <div>
-                                <label class="form-label">ผู้รับ (Consignee)</label>
-                                <input type="text" id="consignee" class="form-input">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="form-label">ปลายทาง (Destination)</label>
-                            <input type="text" id="destination" class="form-input">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-section-card space-y-5">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-lg font-bold text-blue-900 flex items-center space-x-2"><span>📦</span> รายละเอียดรายการสินค้า (Order Details)</h2>
-                        <button type="button" onclick="addTableRow()" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2 px-5 rounded-lg shadow-sm">
-                            + เพิ่มรายการ
-                        </button>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm border-collapse" id="itemsTable">
-                            <thead class="bg-blue-50 text-blue-900">
-                                <tr>
-                                    <th class="p-3 border-b border-gray-200 text-left">หมายเลขตู้ (Container No.)</th>
-                                    <th class="p-3 border-b border-gray-200 text-left">ขนาดแพ็คเกจ (Pkg Size)</th>
-                                    <th class="p-3 border-b border-gray-200 text-left">ชื่อสินค้า (Item Name)</th>
-                                    <th class="p-3 border-b border-gray-200 text-left">จำนวน (Pcs)</th>
-                                    <th class="p-3 border-b border-gray-200 text-center">จัดการ</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100">
-                                <tr>
-                                    <td class="p-3"><input type="text" class="item-table-input uppercase container-no-col" placeholder="ICLU..."></td>
-                                    <td class="p-3"><input type="text" class="item-table-input pkg-size-col" placeholder="เช่น 24"></td>
-                                    <td class="p-3"><input type="text" class="item-table-input item-name-col" placeholder="เช่น ทุเรียนหมอนทอง"></td>
-                                    <td class="p-3"><input type="number" class="item-table-input text-right pcs-col" placeholder="0"></td>
-                                    <td class="p-3 text-center"><button type="button" onclick="removeTableRow(this)" class="text-red-500 hover:text-red-700 font-bold">🗑️</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="form-section-card space-y-5">
-                    <h2 class="text-lg font-bold text-blue-900 flex items-center space-x-2"><span>📝</span> หมายเหตุ (Remarks)</h2>
-                    <textarea id="remarks" rows="4" class="form-input" placeholder="กรอกข้อมูลเพิ่มเติม (ถ้ามี)"></textarea>
-                </div>
-
-                <div class="flex justify-center py-6">
-                    <button type="button" onclick="generatePDF()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-12 rounded-xl shadow-lg transition duration-200 text-lg flex items-center space-x-3">
-                        💾 <span>บันทึกและส่งออกเป็น PDF (Save and Export to PDF)</span>
-                    </button>
-                </div>
-                
-            </form>
+            <button onclick="generatePDF()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-lg flex items-center gap-2">
+                <span>🖨️</span> ออกใบงาน PDF (1 หน้า)
+            </button>
         </div>
-    </main>
+
+        <form id="docForm" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="input-card">
+                    <label class="label-text">เลขที่ใบงาน (RN NO.)</label>
+                    <input type="text" id="rn_no" class="input-field" placeholder="RN20260513-XXX">
+                </div>
+                <div class="input-card">
+                    <label class="label-text">วันที่ (Date)</label>
+                    <input type="date" id="doc_date" class="input-field">
+                </div>
+                <div class="input-card">
+                    <label class="label-text">หมายเลขตู้ (Container No.)</label>
+                    <input type="text" id="container_no" class="input-field uppercase" placeholder="TCLU1234567">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="input-card">
+                    <h3 class="text-blue-700 font-bold mb-3 border-b pb-2">SHIPPER (ผู้จัดส่ง)</h3>
+                    <div class="space-y-3">
+                        <input type="text" id="shipper_name" class="input-field font-bold" placeholder="ชื่อบริษัทผู้ส่ง">
+                        <textarea id="shipper_addr" class="input-field text-xs" rows="2" placeholder="ที่อยู่ผู้ส่ง..."></textarea>
+                    </div>
+                </div>
+                <div class="input-card">
+                    <h3 class="text-blue-700 font-bold mb-3 border-b pb-2">CONSIGNEE (ผู้รับสินค้า)</h3>
+                    <div class="space-y-3">
+                        <input type="text" id="consignee_name" class="input-field font-bold" placeholder="ชื่อบริษัทผู้รับ">
+                        <textarea id="consignee_addr" class="input-field text-xs" rows="2" placeholder="ที่อยู่ผู้รับ..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-card">
+                <h3 class="text-gray-700 font-bold mb-3">TRANSPORT DETAILS</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="label-text">บ.รับงาน (Carrier)</label>
+                        <input type="text" id="carrier" class="input-field">
+                    </div>
+                    <div>
+                        <label class="label-text">ทะเบียนรถ (Truck No.)</label>
+                        <input type="text" id="truck_no" class="input-field">
+                    </div>
+                    <div>
+                        <label class="label-text">พนักงานขับรถ (Driver)</label>
+                        <input type="text" id="driver" class="input-field">
+                    </div>
+                    <div>
+                        <label class="label-text">ปลายทาง (Destination)</label>
+                        <input type="text" id="dest" class="input-field">
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-card overflow-x-auto">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-gray-700 font-bold">ITEM LIST (รายละเอียดสินค้า)</h3>
+                    <button type="button" onclick="addRow()" class="text-blue-600 text-sm font-bold">+ เพิ่มแถว</button>
+                </div>
+                <table class="w-full text-sm" id="itemTable">
+                    <thead>
+                        <tr class="text-left text-gray-400 border-b">
+                            <th class="pb-2 w-16">No.</th>
+                            <th class="pb-2">Description of Goods</th>
+                            <th class="pb-2 w-32 text-right">Qty (Pcs)</th>
+                            <th class="pb-2 w-32 text-right">Package</th>
+                            <th class="pb-2 w-10"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr>
+                            <td class="py-3">1</td>
+                            <td class="py-3"><input type="text" class="input-field item-desc" placeholder="เช่น FRESH DURIAN"></td>
+                            <td class="py-3 text-right"><input type="number" class="input-field text-right item-qty" value="0"></td>
+                            <td class="py-3 text-right"><input type="text" class="input-field text-right item-pkg" placeholder="CARTONS"></td>
+                            <td class="py-3 text-center"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="input-card">
+                <label class="label-text">REMARKS / หมายเหตุ</label>
+                <textarea id="remarks" class="input-field" rows="2"></textarea>
+            </div>
+        </form>
+    </div>
 
     <script>
-        // Set default date to today
+        // Set default date
         document.getElementById('doc_date').valueAsDate = new Date();
 
-        function addTableRow() {
-            const tableBody = document.getElementById('itemsTable').getElementsByTagName('tbody')[0];
-            const newRow = tableBody.insertRow();
-            newRow.innerHTML = `
-                <td class="p-3"><input type="text" class="item-table-input uppercase container-no-col" placeholder="ICLU..."></td>
-                <td class="p-3"><input type="text" class="item-table-input pkg-size-col" placeholder="เช่น 24"></td>
-                <td class="p-3"><input type="text" class="item-table-input item-name-col" placeholder="เช่น ทุเรียนหมอนทอง"></td>
-                <td class="p-3"><input type="number" class="item-table-input text-right pcs-col" placeholder="0"></td>
-                <td class="p-3 text-center"><button type="button" onclick="removeTableRow(this)" class="text-red-500 hover:text-red-700 font-bold">🗑️</button></td>
+        function addRow() {
+            const table = document.getElementById('itemTable').getElementsByTagName('tbody')[0];
+            const rowCount = table.rows.length + 1;
+            const row = table.insertRow();
+            row.innerHTML = `
+                <td class="py-3">${rowCount}</td>
+                <td class="py-3"><input type="text" class="input-field item-desc"></td>
+                <td class="py-3 text-right"><input type="number" class="input-field text-right item-qty" value="0"></td>
+                <td class="py-3 text-right"><input type="text" class="input-field text-right item-pkg"></td>
+                <td class="py-3 text-center"><button type="button" onclick="this.parentElement.parentElement.remove()" class="text-red-400">✕</button></td>
             `;
-        }
-
-        function removeTableRow(button) {
-            const row = button.parentNode.parentNode;
-            const table = document.getElementById('itemsTable').getElementsByTagName('tbody')[0];
-            if (table.rows.length > 1) {
-                row.parentNode.removeChild(row);
-            } else {
-                alert("อย่างน้อยต้องมี 1 รายการครับ");
-            }
         }
 
         async function generatePDF() {
             const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            const dateStr = document.getElementById('doc_date').value;
-            const rnNoStr = document.getElementById('rn_no').value || 'Draft';
-
-            // ดึงค่าหลักจาก Form
-            const fd = {
-                date: new Date(dateStr).toLocaleDateString('th-TH'),
-                rn: rnNoStr,
-                cont: document.getElementById('container_no').value,
-                size: document.getElementById('container_size').value,
-                carr: document.getElementById('carrier').value,
-                t_head: document.getElementById('truck_head').value,
-                t_tail: document.getElementById('truck_tail').value,
-                driver: document.getElementById('driver_name').value,
-                ship: document.getElementById('shipper').value,
-                cons: document.getElementById('consignee').value,
-                dest: document.getElementById('destination').value,
-                rems: document.getElementById('remarks').value
-            };
-
-            // ดึงข้อมูลรายการสินค้า (Item Details Table)
-            const itemTableBody = document.getElementById('itemsTable').getElementsByTagName('tbody')[0];
-            const tableRowsData = [];
-            for (let i = 0; i < itemTableBody.rows.length; i++) {
-                const r = itemTableBody.rows[i];
-                const cont_no = r.getElementsByClassName('container-no-col')[0].value;
-                const pkg_size = r.getElementsByClassName('pkg-size-col')[0].value;
-                const item_name = r.getElementsByClassName('item-name-col')[0].value;
-                const pcs = r.getElementsByClassName('pcs-col')[0].value;
-                
-                if(cont_no || pkg_size || item_name || pcs) { // Add only if at least one field has data
-                    tableRowsData.push([cont_no, pkg_size, item_name, pcs]);
-                }
-            }
-
-            // --- เริ่มสร้าง Layout PDF (เหมือน DEMOSHEET.pdf) ---
-
-            // หัวกระดาษ (Header Area)
-            doc.setFontSize(20); doc.setTextColor(30, 58, 138); // Blue-900
-            doc.text("SPM WORK ORDER / TRANSPORT DOCUMENT", 105, 20, { align: "center" });
+            const doc = new jsPDF('p', 'mm', 'a4');
             
-            doc.setFontSize(10); doc.setTextColor(100);
-            doc.text(`วันที่ออกเอกสาร (Date): ${fd.date}`, 195, 30, { align: "right" });
-            doc.text(`เลขที่ใบงาน (Order No.): ${fd.rn}`, 15, 30);
-            doc.line(15, 33, 195, 33); // Header separator line
+            // --- DATA COLLECTION ---
+            const rn = document.getElementById('rn_no').value || 'N/A';
+            const date = document.getElementById('doc_date').value;
+            const container = document.getElementById('container_no').value || '-';
+            
+            // --- PDF STYLING & GENERATION ---
+            // Header Section
+            doc.setFontSize(22);
+            doc.setTextColor(40);
+            doc.text("WORK ORDER / INVOICE", 105, 20, { align: "center" });
+            
+            doc.setFontSize(10);
+            doc.text(`RN NO: ${rn}`, 15, 30);
+            doc.text(`DATE: ${date}`, 195, 30, { align: "right" });
+            doc.line(15, 33, 195, 33);
 
-            // เนื้อหาหลัก (Main Body with Two Columns)
-            doc.setFontSize(11); doc.setTextColor(0);
-            let y = 40;
+            // Shipper & Consignee Box
+            doc.setFont(undefined, 'bold');
+            doc.text("SHIPPER:", 15, 42);
+            doc.text("CONSIGNEE:", 110, 42);
+            
+            doc.setFont(undefined, 'normal');
+            doc.setFontSize(9);
+            // Shipper Info
+            const sName = document.getElementById('shipper_name').value;
+            const sAddr = document.getElementById('shipper_addr').value;
+            doc.text(sName, 15, 48, { maxWidth: 80 });
+            doc.text(sAddr, 15, 53, { maxWidth: 80 });
 
-            // Column 1 (Left Side)
-            doc.setFont(undefined, 'bold'); doc.text("SHIPPER / ผู้จัดส่ง:", 15, y); doc.setFont(undefined, 'normal');
-            doc.text(fd.ship, 15, y + 6);
-            doc.setFont(undefined, 'bold'); doc.text("CARRIER / ผู้รับงาน:", 15, y + 16); doc.setFont(undefined, 'normal');
-            doc.text(fd.carr, 15, y + 22);
-            doc.setFont(undefined, 'bold'); doc.text("VEHICLE DETAILS / ข้อมูลรถ:", 15, y + 32); doc.setFont(undefined, 'normal');
-            doc.text(`หัว: ${fd.t_head} / หาง: ${fd.t_tail}`, 15, y + 38);
-            doc.text(`คนขับ: ${fd.driver}`, 15, y + 44);
+            // Consignee Info
+            const cName = document.getElementById('consignee_name').value;
+            const cAddr = document.getElementById('consignee_addr').value;
+            doc.text(cName, 110, 48, { maxWidth: 85 });
+            doc.text(cAddr, 110, 53, { maxWidth: 85 });
 
-            // Column 2 (Right Side)
-            doc.setFont(undefined, 'bold'); doc.text("CONSIGNEE / ผู้รับ:", 110, y); doc.setFont(undefined, 'normal');
-            doc.text(fd.cons, 110, y + 6);
-            doc.setFont(undefined, 'bold'); doc.text("DESTINATION / ปลายทาง:", 110, y + 16); doc.setFont(undefined, 'normal');
-            doc.text(fd.dest, 110, y + 22);
-            doc.setFont(undefined, 'bold'); doc.text("MAIN CONTAINER INFO:", 110, y + 32); doc.setFont(undefined, 'normal');
-            doc.text(`ตู้หลัก: ${fd.cont} (${fd.size})`, 110, y + 38);
+            // Transport Info Row
+            doc.setFillColor(245, 245, 245);
+            doc.rect(15, 75, 180, 15, 'F');
+            doc.setFontSize(8); doc.setTextColor(100);
+            doc.text("CONTAINER NO.", 20, 80);
+            doc.text("CARRIER", 70, 80);
+            doc.text("TRUCK / DRIVER", 120, 80);
+            doc.text("DESTINATION", 160, 80);
 
-            y += 55;
-            doc.setFontSize(14); doc.setFont(undefined, 'bold'); doc.setTextColor(30, 58, 138);
-            doc.text("ORDER DETAILS / รายละเอียดรายการสินค้า:", 15, y); y += 4;
+            doc.setFontSize(10); doc.setTextColor(0); doc.setFont(undefined, 'bold');
+            doc.text(container, 20, 86);
+            doc.text(document.getElementById('carrier').value, 70, 86);
+            doc.text(`${document.getElementById('truck_no').value} / ${document.getElementById('driver').value}`, 120, 86);
+            doc.text(document.getElementById('dest').value, 160, 86);
 
-            // ตารางสรุปรายการสินค้า (Item AutoTable - matching grid image and DEMOSHEET.pdf)
-            doc.autoTable({
-                startY: y,
-                head: [["หมายเลขตู้ (Container No.)", "ขนาด (Pkg Size)", "ชื่อสินค้า (Item Name)", "จำนวน (Pcs)"]],
-                body: tableRowsData,
-                theme: 'striped',
-                styles: { font: 'Sarabun', fontSize: 10, halign: 'left' },
-                headStyles: { fillColor: [30, 58, 138] }, // Blue-900
-                columnStyles: { 3: { halign: 'right' } } // จำนวน ชิดขวา
+            // Item Table
+            const items = [];
+            const rows = document.querySelectorAll('#itemTable tbody tr');
+            rows.forEach((row, index) => {
+                const desc = row.querySelector('.item-desc').value;
+                const qty = row.querySelector('.item-qty').value;
+                const pkg = row.querySelector('.item-pkg').value;
+                if(desc) items.push([index + 1, desc, qty, pkg]);
             });
 
-            // ส่วนหมายเหตุและลงชื่อ
-            let finalY = doc.lastAutoTable.finalY + 15;
-            doc.setFontSize(11); doc.setTextColor(0); doc.setFont(undefined, 'bold');
-            doc.text("REMARKS / หมายเหตุ:", 15, finalY); finalY += 6; doc.setFont(undefined, 'normal');
-            doc.text(fd.rems, 15, finalY);
+            doc.autoTable({
+                startY: 95,
+                head: [['NO.', 'DESCRIPTION OF GOODS', 'QUANTITY', 'PACKAGE']],
+                body: items,
+                theme: 'grid',
+                headStyles: { fillColor: [30, 58, 138], halign: 'center' },
+                columnStyles: { 
+                    0: { cellWidth: 15, halign: 'center' },
+                    2: { cellWidth: 30, halign: 'right' },
+                    3: { cellWidth: 40, halign: 'center' }
+                },
+                styles: { font: 'Sarabun', fontSize: 9 }
+            });
 
-            finalY += 30;
-            doc.text("__________________________", 40, finalY);
-            doc.text("( ผู้จัดส่ง / Authorized Signatory )", 43, finalY + 7);
+            // Footer / Signatures
+            let finalY = doc.lastAutoTable.finalY + 20;
+            if (finalY > 250) { doc.addPage(); finalY = 20; }
+
+            doc.setFontSize(10); doc.setFont(undefined, 'bold');
+            doc.text("REMARKS:", 15, finalY);
+            doc.setFont(undefined, 'normal');
+            doc.text(document.getElementById('remarks').value, 15, finalY + 5, { maxWidth: 180 });
+
+            const sigY = finalY + 40;
+            doc.line(20, sigY, 80, sigY);
+            doc.text("AUTHORIZED SIGNATORY", 30, sigY + 5);
             
-            doc.text("__________________________", 130, finalY);
-            doc.text("( พนักงานขับรถ / Driver Signature )", 133, finalY + 7);
+            doc.line(130, sigY, 190, sigY);
+            doc.text("DRIVER SIGNATURE", 145, sigY + 5);
 
-            // บันทึกไฟล์ PDF
-            doc.save(`WorkOrder_${rnNoStr}.pdf`);
+            // Save
+            doc.save(`SPM_WorkOrder_${rn}.pdf`);
         }
     </script>
 </body>
