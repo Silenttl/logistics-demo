@@ -733,6 +733,8 @@
                     <h2>สร้างใบแจ้งหนี้ใหม่</h2>
                 </div>
                 
+                <div id="validationErrors" style="display: none; background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; padding: 1rem; border-radius: 6px; margin-bottom: 1rem;"></div>
+                
                 <form onsubmit="saveInvoice(event)">
                     <!-- Header Section -->
                     <h3 style="margin: 1.5rem 0 1rem; color: var(--primary); font-family: 'Kanit', sans-serif;">ข้อมูลหัวเอกสาร</h3>
@@ -1072,6 +1074,11 @@
             customers: JSON.parse(localStorage.getItem('invoiceCustomers')) || [],
             products: JSON.parse(localStorage.getItem('invoiceProducts')) || [],
             invoices: JSON.parse(localStorage.getItem('invoiceInvoices')) || [],
+            exchangeRates: JSON.parse(localStorage.getItem('invoiceExchangeRates')) || {
+                THB: 1,
+                CNY: 4.50,
+                USD: 33.50
+            },
             currentUser: {
                 id: 1,
                 name: 'Admin',
@@ -1080,7 +1087,14 @@
             },
             invoiceItems: [],
             editingCustomerId: null,
-            editingProductId: null
+            editingProductId: null,
+            settings: JSON.parse(localStorage.getItem('invoiceSettings')) || {
+                companyName: 'ICL Logistics',
+                address: '123 ถนนรัชดา กรุงเทพฯ',
+                phone: '+66-2-999-9999',
+                email: 'info@icl.co.th',
+                taxId: '0123456789012'
+            }
         };
         
         // ===== INITIALIZATION =====
@@ -1515,22 +1529,52 @@
             const items = document.querySelectorAll('#invoiceItemsList tr');
             let totalWeight = 0;
             let itemsTotal = 0;
+            const errors = [];
             
-            items.forEach(row => {
+            items.forEach((row, index) => {
+                const productId = row.querySelector('select').value;
+                const product = data.products.find(p => p.id == productId);
                 const qty = parseFloat(row.querySelector('td:nth-child(3) input').value) || 0;
                 const weight = parseFloat(row.querySelector('td:nth-child(5) input').value) || 0;
                 const unitPrice = parseFloat(row.querySelector('td:nth-child(6) input').value) || 0;
-                const total = qty * unitPrice;
                 
+                // Validation
+                if (productId && !product?.hsCode) {
+                    errors.push(`รายการที่ ${index + 1}: HS Code ขาดหายไป`);
+                }
+                if (productId && weight === 0) {
+                    errors.push(`รายการที่ ${index + 1}: น้ำหนักไม่ถูกต้อง`);
+                }
+                
+                const total = qty * unitPrice;
                 row.querySelector('td:nth-child(7) input').value = total.toFixed(2);
                 
                 totalWeight += weight * qty;
                 itemsTotal += total;
             });
             
+            if (errors.length > 0) {
+                document.getElementById('validationErrors').innerHTML = 
+                    '<strong>⚠️ ข้อผิดพลาดในการตรวจสอบ:</strong><ul style="margin-left: 1rem; margin-top: 0.5rem;">' +
+                    errors.map(e => `<li>${e}</li>`).join('') +
+                    '</ul>';
+                document.getElementById('validationErrors').style.display = 'block';
+            } else {
+                document.getElementById('validationErrors').style.display = 'none';
+            }
+            
             document.getElementById('totalWeight').textContent = totalWeight.toFixed(2);
             document.getElementById('itemsTotal').textContent = itemsTotal.toFixed(2);
-            document.getElementById('grandTotal').textContent = itemsTotal.toFixed(2) + ' ' + (document.getElementById('currency').value || 'THB');
+            
+            // Calculate FOB, CNF, CIF
+            const exchangeRate = data.exchangeRates[document.getElementById('currency').value] || 1;
+            const fob = itemsTotal;
+            const cnf = fob * 1.15; // FOB + 15% freight
+            const cif = cnf * 1.10; // CNF + 10% insurance
+            
+            document.getElementById('grandTotal').textContent = fob.toFixed(2) + ' ' + (document.getElementById('currency').value || 'THB');
+            
+            console.log(`FOB: ${fob}, CNF: ${cnf}, CIF: ${cif}`);
         }
         
         function updateInvoiceTemplate() {
@@ -1546,9 +1590,16 @@
             const invoiceType = document.getElementById('invoiceType').value;
             const customerId = parseInt(document.getElementById('customerId').value);
             const invoiceDate = document.getElementById('invoiceDate').value;
+            const currency = document.getElementById('currency').value;
             
-            if (!invoiceNo || !invoiceType || !customerId || !invoiceDate) {
+            if (!invoiceNo || !invoiceType || !customerId || !invoiceDate || !currency) {
                 showAlert('กรุณากรอกข้อมูลให้ครบถ้วน', 'danger');
+                return;
+            }
+            
+            const customer = data.customers.find(c => c.id === customerId);
+            if (!customer) {
+                showAlert('ลูกค้าที่เลือกไม่ถูกต้อง', 'danger');
                 return;
             }
             
@@ -1558,24 +1609,55 @@
                 return;
             }
             
-            // Prepare items
+            // Prepare items with validation
             const invoiceItems = [];
+            let hasError = false;
+            
             items.forEach(row => {
                 const productId = row.querySelector('select').value;
                 if (productId) {
+                    const product = data.products.find(p => p.id == productId);
+                    const qty = parseFloat(row.querySelector('td:nth-child(3) input').value);
+                    const weight = parseFloat(row.querySelector('td:nth-child(5) input').value);
+                    const unitPrice = parseFloat(row.querySelector('td:nth-child(6) input').value);
+                    
+                    // Validation checks
+                    if (!product?.hsCode) {
+                        showAlert('HS CODE ขาดหายไป สำหรับสินค้า: ' + product?.productName, 'danger');
+                        hasError = true;
+                        return;
+                    }
+                    if (weight === 0) {
+                        showAlert('น้ำหนักไม่ถูกต้องสำหรับ: ' + product?.productName, 'danger');
+                        hasError = true;
+                        return;
+                    }
+                    if (product?.currency !== currency) {
+                        showAlert('สกุลเงินของสินค้าไม่ตรงกับใบแจ้งหนี้', 'warning');
+                    }
+                    
                     invoiceItems.push({
                         productId: parseInt(productId),
-                        qty: parseFloat(row.querySelector('td:nth-child(3) input').value),
-                        weight: parseFloat(row.querySelector('td:nth-child(5) input').value),
-                        unitPrice: parseFloat(row.querySelector('td:nth-child(6) input').value),
-                        total: parseFloat(row.querySelector('td:nth-child(7) input').value)
+                        qty,
+                        weight,
+                        unitPrice,
+                        total: qty * unitPrice,
+                        hsCode: product?.hsCode
                     });
                 }
             });
             
+            if (hasError) return;
+            
+            // Check for duplicate products
+            const productIds = invoiceItems.map(i => i.productId);
+            if (new Set(productIds).size !== productIds.length) {
+                showAlert('มีสินค้าที่ซ้ำกันในใบแจ้งหนี้', 'danger');
+                return;
+            }
+            
             const totalWeight = parseFloat(document.getElementById('totalWeight').textContent);
             const itemsTotal = parseFloat(document.getElementById('itemsTotal').textContent);
-            const currency = document.getElementById('currency').value;
             const notes = document.getElementById('invoiceNotes').value;
             
             const invoice = {
@@ -1591,7 +1673,8 @@
                 items: invoiceItems,
                 notes,
                 status: 'draft',
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
             };
             
             data.invoices.push(invoice);
@@ -1604,11 +1687,12 @@
             document.getElementById('itemsTotal').textContent = '0';
             document.getElementById('grandTotal').textContent = '0 THB';
             document.getElementById('invoiceDate').valueAsDate = new Date();
+            document.getElementById('validationErrors').style.display = 'none';
             
             updateDashboard();
             loadInvoices();
             
-            showAlert('บันทึกใบแจ้งหนี้สำเร็จ', 'success');
+            showAlert('บันทึกใบแจ้งหนี้สำเร็จ ลำดับเอกสาร: ' + invoiceNo, 'success');
             
             // Switch to invoices tab
             setTimeout(() => {
